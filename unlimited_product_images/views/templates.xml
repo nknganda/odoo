@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+<template id="optima_assets_frontend" inherit_id="website.assets_frontend" name="optima_shop">
+  <xpath expr="." position="inside">
+      <link rel='stylesheet' href='/unlimited_product_images/static/src/css/optima_website.css'/>
+      <script type="text/javascript" src="/unlimited_product_images/static/src/js/jquery.elevatezoom.js"></script>
+  </xpath>
+</template>
+
+<template id="optima_layout_editor" inherit_id="website.layout_editor" name="Optima Editor">
+    <xpath expr='//t[@t-call-assets="website.assets_editor"][@async="True"]' position="after">
+      <script type="text/javascript">
+  function productImage(){
+    var image = $('.optima_product_image');
+    var settings = $('#optima_elevateZoom');
+    image.elevateZoom({gallery:"optima_thumb",galleryActiveClass:"active",
+	cursor: settings.attr("cursor"),
+	zoomType: settings.attr("zoomType"),
+	lensShape: settings.attr("lensShape"),
+	lensSize: parseInt(settings.attr("lensSize")),
+	zoomWindowWidth: parseInt(settings.attr("zoomWindowWidth")),
+	zoomWindowHeight: parseInt(settings.attr("zoomWindowHeight")),
+	zoomWindowFadeIn: parseInt(settings.attr("zoomWindowFadeIn")),
+	zoomWindowFadeOut: parseInt(settings.attr("zoomWindowFadeOut")),
+	lensFadeIn: parseInt(settings.attr("lensFadeIn")),
+	lensFadeOut: parseInt(settings.attr("lensFadeOut")),
+	easing: settings.attr("easing"),
+	scrollZoom: settings.attr("scrollZoom"),
+	tint: settings.attr("tint"),
+	tintColour: settings.attr("tintColour"),
+	tintOpacity: parseFloat(settings.attr("tintOpacity")),
+	zoomWindowPosition: parseInt(settings.attr("zoomWindowPosition")),
+	zoomWindowFadeIn:500,zoomWindowFadeOut:750});
+  }
+  $(document).ready(function() {
+	productImage();
+       	//pass the images to box
+        $(".optima_thumb_small").bind("mouseenter", function(e) {
+	    $(".optima_thumb_small").removeClass('active');
+	    $(this).addClass('active');
+            $('.optima_product_image').attr("src", $(".active img").attr("src"));
+	    productImage();
+            return false;
+        });
+  });
+      </script>
+    </xpath>
+</template>
+
+<template id="optima_product_images" inherit_id="website_sale.product" name="Optima Product Images">
+  <xpath expr="//div[@class='col-sm-7 col-md-7 col-lg-7']" position="inside">
+        <div id="optima_thumb">
+        <span itemprop="image" class="optima_thumb_small" t-att-title="product.name" t-field="product.image" t-field-options='{"widget": "image", "class": "optima_thumbnail"}'/>
+        <t t-foreach="product.image_ids" t-as="pimage">
+	  <t t-if="pimage.publish">
+            <span itemprop="image" class="optima_thumb_small" t-att-title="pimage.name" t-field="pimage.image" t-field-options='{"widget": "image", "class": "optima_thumbnail"}'/>
+          </t>
+        </t>
+       </div>
+  </xpath>
+  <xpath expr="//div[@class='col-sm-7 col-md-7 col-lg-7']/span[@t-field='product.image']" position="replace">
+     <span itemprop="image" id= "optima_elevateZoom" 
+	t-field="product.image" 
+	t-att-title="product.name" 
+	t-att-zoomWindowPosition="product.zoomWindowPosition"
+	t-att-cursor="product.cursor"
+	t-att-tint="product.tint"
+	t-att-tintColour="product.tintColour"
+	t-att-tintOpacity="product.tintOpacity"
+	t-att-zoomType="product.zoomType"
+	t-att-lensShape="product.lensShape"
+	t-att-lensSize="product.lensSize"
+	t-att-zoomWindowHeight="product.zoomWindowHeight"
+	t-att-zoomWindowWidth="product.zoomWindowWidth"
+	t-att-zoomWindowFadeIn="product.zoomWindowFadeIn"
+	t-att-zoomWindowFadeOut="product.zoomWindowFadeOut"
+	t-att-lensFadeIn="product.lensFadeIn"
+	t-att-lensFadeOut="product.lensFadeOut"
+	t-att-easing="product.easing"
+	t-att-scrollZoom="product.scrollZoom"
+	t-field-options='{"widget": "image", "class": "optima_product_image"}'/>
+  </xpath>
+</template>
+    </data>
+</openerp>
