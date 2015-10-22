@@ -7,26 +7,28 @@
             <field name="arch" type="xml">
               <xpath expr="//page[@name='notes']" position="after">
 		<page string="Additional Images" name="product_images">
-			<group string="Image Settings">
-			<field name="zoomWindowPosition"/>
+		    <group string="Settings">
+			<group>
+			<field name="zoomType"/>
+			<field name="scrollZoom"/>
 			<field name="cursor"/>
+			<field name="lensShape" attrs="{'invisible': [('zoomType', '=', 'inner')]}"/>
+			<field name="easing" attrs="{'invisible': [('zoomType', '=', 'lens')]}"/>
+			<field name="tint" attrs="{'invisible': [('zoomType', '!=', 'window')]}"/>
 			</group>
 			<group>
-			<field name="tint"/>
-			<field name="scrollZoom"/>
-			<field name="tintColour"/>
-			<field name="tintOpacity"/>
-			<field name="zoomType"/>
-			<field name="lensShape"/>
-			<field name="lensSize"/>
-			<field name="easing"/>
-			<field name="zoomWindowWidth"/>
-			<field name="zoomWindowHeight"/>
-			<field name="zoomWindowFadeIn"/>
-			<field name="zoomWindowFadeOut"/>
-			<field name="lensFadeIn"/>
-			<field name="lensFadeOut"/>
+			<field name="tintColour"  attrs="{'invisible': [('tint', '!=', True)]}"/>
+			<field name="tintOpacity"  attrs="{'invisible': [('tint', '!=', True)]}"/>
+			<field name="lensSize" attrs="{'invisible': [('zoomType', '!=', 'lens')]}"/>
+			<field name="lensFadeIn" attrs="{'invisible': [('zoomType', '!=', 'lens')]}"/>
+			<field name="lensFadeOut" attrs="{'invisible': [('zoomType', '!=', 'lens')]}"/>
+			<field name="zoomWindowPosition" attrs="{'invisible': [('zoomType', '!=', 'window')]}"/>
+			<field name="zoomWindowWidth" attrs="{'invisible': [('zoomType', '!=', 'window')]}"/>
+			<field name="zoomWindowHeight" attrs="{'invisible': [('zoomType', '!=', 'window')]}"/>
+			<field name="zoomWindowFadeIn" attrs="{'invisible': [('zoomType', '!=', 'window')]}"/>
+			<field name="zoomWindowFadeOut" attrs="{'invisible': [('zoomType', '!=', 'window')]}"/>
 			</group>
+		    </group>
 		   <field name="image_ids"  mode="kanban" context="{'default_product_id': active_id}">
 			<kanban>
 			 <field name="sequence" string="Order of Display"/>

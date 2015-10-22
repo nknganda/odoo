@@ -58,7 +58,7 @@ class product_template(models.Model):
 	lensShapes = ["round","square"]
 	image_ids = fields.One2many('product.images', 'product_id', 'Additional Images')
 	scrollZoom = fields.Boolean('Mousewheel Zoom', default=True, help="Activate or deactivate the mousewheel zooming in and out")
-	easing = fields.Boolean('Zoom Easing', default=False, help="This determines how slowly the zoomed image is moved and displayed on"\
+	easing = fields.Boolean('Zoom Easing', default=True, help="This determines how slowly the zoomed image is moved and displayed on"\
 	" the window. only affect window type of zoom")
 	tint = fields.Boolean('Tint Image', default=False, help="You can easily set tints for the zoom, you can set the colour and opacity of the"\
 								" tint to be any value")
