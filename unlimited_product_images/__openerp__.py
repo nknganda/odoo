@@ -3,7 +3,7 @@
     'name': "Multiple Images per Product - Odoo-9.0",
 
     'summary': """
-        This Module will make it possible to add more images for the website product """,
+        This Module will make it possible to add unlimited number of images for the website product """,
 
     'description': """
         This Module will make it possible to add unlimited number of images for the website product. With an option to publish/unpublish, zoom in or out, magnify in different styles configurable per product.
