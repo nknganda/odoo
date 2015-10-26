@@ -30,8 +30,11 @@ var Composer = Widget.extend({
         this._super.apply(this, arguments);
         this.options = _.defaults(options || {}, {
             context: {},
+            input_baseline: 18,
+            input_max_height: 150,
+            input_min_height: 28,
             mention_delimiter: '@',
-            mention_min_length: 2,
+            mention_min_length: 0,
             mention_typing_speed: 400,
             mention_fetch_limit: 8,
         });
@@ -56,7 +59,7 @@ var Composer = Widget.extend({
         this.$mention_partner_tags = this.$('.o_composer_mentioned_partners');
         this.$mention_dropdown = this.$('.o_composer_mention_dropdown');
         this.$input = this.$('.o_composer_input');
-        this.$input.focus();
+        this.resize_input();
 
         // Attachments
         $(window).on(this.fileupload_id, this.on_attachment_loaded);
@@ -88,8 +91,9 @@ var Composer = Widget.extend({
     preprocess_message: function () {
         // Return a deferred as this function is extended with asynchronous
         // behavior for the chatter composer
+        var value = this.$input.val().replace(/\n|\r/g, '<br/>');
         return $.when({
-            content: this.mention_preprocess_message(this.$input.val()),
+            content: this.mention_preprocess_message(value),
             attachment_ids: _.pluck(this.get('attachment_ids'), 'id'),
             partner_ids: _.pluck(this.get('mention_selected_partners'), 'id'),
         });
@@ -106,11 +110,25 @@ var Composer = Widget.extend({
 
             // Empty input, selected partners and attachments
             self.$input.val('');
+            self.resize_input();
             self.set('mention_selected_partners', []);
             self.set('attachment_ids', []);
 
             self.$input.focus();
         });
+    },
+
+    /**
+     * Resizes the textarea according to its scrollHeight
+     * @param {Boolean} [force_resize] if not true, only reset the size if empty
+     */
+    resize_input: function (force_resize) {
+        if (this.$input.val() === '') {
+            this.$input.css('height', this.options.input_min_height);
+        } else if (force_resize) {
+            var height = this.$input.prop('scrollHeight') + this.options.input_baseline;
+            this.$input.css('height', Math.min(this.options.input_max_height, height));
+        }
     },
 
     // Events
@@ -122,6 +140,13 @@ var Composer = Widget.extend({
     on_click_emoji_img: function(event) {
         this.$input.val(this.$input.val() + " " + $(event.currentTarget).data('emoji') + " ");
         this.$input.focus();
+    },
+
+    /**
+     * Send the message on ENTER, but go to new line on SHIFT+ENTER
+     */
+    prevent_send: function (event) {
+        return event.shiftKey;
     },
 
     on_keydown: function (event) {
@@ -140,9 +165,13 @@ var Composer = Widget.extend({
                 break;
             // ENTER: submit the message only if the dropdown mention proposition is not displayed
             case $.ui.keyCode.ENTER:
-                event.preventDefault();
-                if (!this.get('mention_partners').length) {
+                if (this.get('mention_partners').length) {
+                    event.preventDefault();
+                } else if (!this.prevent_send(event)) {
+                    event.preventDefault();
                     this.send_message();
+                } else {
+                    this.resize_input(true);
                 }
                 break;
         }
@@ -168,11 +197,12 @@ var Composer = Widget.extend({
             // Otherwise, check if a mention is typed
             default:
                 this.mention_word = this.mention_detect_delimiter();
-                if (this.mention_word) {
+                if (this.mention_word !== false) {
                     this.mention_word_changed();
                 } else {
                     this.set('mention_partners', []); // close the dropdown
                 }
+                this.resize_input();
         }
     },
 
@@ -395,7 +425,7 @@ var Composer = Widget.extend({
                 var match = matches[i];
                 var end_index = match.index + match[0].length;
                 var partner_name = match[0].substring(1);
-                var processed_text = _.str.sprintf("<a href='#' class='o_mail_redirect' data-oe-model='res.partner' data-oe-id='%s'>%s</a>", partners[i].id, partner_name);
+                var processed_text = _.str.sprintf("<a href='#' class='o_mail_redirect' data-oe-model='res.partner' data-oe-id='%s'>@%s</a>", partners[i].id, partner_name);
                 var subtext = message.substring(start_index, end_index).replace(match[0], processed_text);
                 substrings.push(subtext);
                 start_index = end_index;
