@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Custom Invoice Report",
+    'name': "Professional Invoice Report Templates - Odoo9.0",
 
     'summary': """
-        Customized invoice for odoo  accounting module""",
+        Make your Odoo Invoice reports look professional by branding them. Choose from Five professional Invoice templates and customize the colors  and logo on the invoice to look professional ans appealing to your customers. You can also create your own template from scratch or edit one of the existing templates that come with this module """,
 
     'description': """
         This module will install a customized client invoice report for accounting module.
     """,
-    'images': ['static/description/invoice1.png'],
-    'price': 18,
+    'images': ['static/description/howto.png'],
+    'price': 57,
     'currency': 'EUR',
 
 
@@ -28,7 +28,12 @@
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
-        'reports/account_invoice.xml',
+        'views/account_invoice.xml',
+        'views/modern_template.xml',
+        'views/classic_template.xml',
+        'views/retro_template.xml',
+        'views/account_invoice_view.xml',
+        'views/res_company_view.xml',
         'reports/reports.xml',
     ],
     # only loaded in demonstration mode

@@ -46,8 +46,6 @@ class product_images(models.Model):
             for rec in self:
            	rec.image = tools.image_resize_image_big(rec.image_small)
 
-
-
 class product_template(models.Model):
 	_name = "product.template"
 	_inherit = ['product.template']
