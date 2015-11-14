@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+    <!-- mobile regex form view definition -->
+    
+    <record model="ir.ui.view" id="mobile_regex_form">
+      <field name="name">Mobile Regex Form</field>
+      <field name="model">mobile.regex</field>
+      <field name="arch" type="xml">
+        <form>
+	 <sheet>
+	  <group>
+	    <group>
+             <field name="name"/>
+	    </group>
+	    <group>
+             <field name="provider_id"/>
+	    </group>
+	  </group>
+	  <notebook>
+	    <page name="regex" string="Regular Expression">
+             <field name="regex"/>
+	     <label for="msg_fields"/>
+             <field name="msg_fields"/>
+		<div>
+	<p>	The list of valid field names to use to store the payment data extracted from transaction SMS are listed below. Using anything else apart from this can lead to inaccurate Transaction data:
+		<ol>
+			<li>code</li>
+			<li>amount</li>
+			<li>sender_name</li>
+			<li>receiver_name</li>
+			<li>sender_number</li>
+			<li>receiver_number</li>
+			<li>date</li>
+			<li>time</li>
+			<li>balance</li>
+		</ol>			
+	</p>
+	<p>
+		Please note the following:<ul><li>The fields MUST be separated by comma e.g (code,amount,balance etc...)</li><li>The fields are case sensitive</li><li>Put the fields in the order of matching regular Expression i.e if 'amount' is the first match in the Regular expression then the first
+         field in the list  must also be 'amount'"</li></ul></p>
+		</div>
+	    </page>
+	  </notebook>
+	 </sheet>
+        </form>
+      </field>
+    </record>
+    
+    <!--Mobile Regex list view definition -->
+    
+    <record model="ir.ui.view" id="mobile_regex_list">
+      <field name="name">mobile regex list</field>
+      <field name="model">mobile.regex</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="provider_id"/>
+          <field name="msg_fields"/>
+          <field name="create_date"/>
+          <field name="write_date"/>
+        </tree>
+      </field>
+    </record>
+    
+
+    <!-- actions opening views on models -->
+    
+    <record model="ir.actions.act_window" id="mobile_regex_action_window">
+      <field name="name">Regular Expression</field>
+      <field name="res_model">mobile.regex</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    
+
+    <!-- server action to the one above -->
+    <!--
+    <record model="ir.actions.server" id="payment_mobile.action_server">
+      <field name="name">payment_mobile server</field>
+      <field name="model_id" ref="model_payment_mobile_payment_mobile"/>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": self._name,
+        }
+      </field>
+    </record>
+    -->
+  
+    <!--  menu item -->
+    
+    <menuitem name="Mobile Regex" id="mobile_regex_root_menu" action="mobile_regex_action_window" parent="payment.root_payment_menu"/>
+    
+    <!-- menu categories -->
+    <!--
+    <menuitem name="Menu 1" id="payment_mobile.menu_1" parent="payment_mobile.menu_root"/>
+    <menuitem name="Menu 2" id="payment_mobile.menu_2" parent="payment_mobile.menu_root"/>
+    -->
+    <!-- actions -->
+    <!--
+    <menuitem name="List" id="payment_mobile.menu_1_list" parent="payment_mobile.menu_1"
+              action="payment_mobile.action_window"/>
+    <menuitem name="Server to list" id="payment_mobile" parent="payment_mobile.menu_2"
+              action="payment_mobile.action_server"/>
+    -->
+  </data>
+</openerp>

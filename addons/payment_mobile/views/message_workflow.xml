@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+<openerp>
+<data>
+<!-- mobile message Workflow -->
+<record id="mobile_message_workflow" model="workflow">
+    <field name="name">mobile.message.workflow</field>
+    <field name="osv">payment.mobile</field>
+    <field name="on_create">True</field>
+</record>
+
+<!--Activities-->
+<record id="mobile_message_raw_act" model="workflow.activity">
+    <field name="wkf_id" ref="mobile_message_workflow"/>
+    <field name="flow_start">True</field>
+    <field name="name">mobile.message.raw</field>
+</record>
+
+<record id="mobile_message_processed_act" model="workflow.activity">
+    <field name="wkf_id" ref="mobile_message_workflow"/>
+    <field name="flow_stop">True</field>
+    <field name="name">mobile.message.processed</field>
+    <field name="kind">function</field>
+    <field name="action">mobile_message_process()</field>
+</record>
+
+<!-- Transitions-->
+
+<record id="mobile_trans_raw_processed" model="workflow.transition">     <!-- 1. process the message as soon as its received-->
+    <field name="act_from" ref="mobile_message_raw_act"/>
+    <field name="act_to" ref="mobile_message_processed_act"/>
+    <field name="condition">True</field>
+</record>
+
+
+</data>
+</openerp>
+
+

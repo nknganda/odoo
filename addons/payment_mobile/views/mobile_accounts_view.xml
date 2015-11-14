@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+    <!-- mobile accounts form view definition -->
+    
+    <record model="ir.ui.view" id="mobile_accounts_form">
+      <field name="name">Mobile Accounts form</field>
+      <field name="model">mobile.accounts</field>
+      <field name="arch" type="xml">
+        <form>
+	 <sheet>
+             <field name="logo" class="oe_avatar" widget="image"/>
+	  <group>
+	    <group>
+             <field name="name"/>
+             <field name="password" password="True"/>
+             <field name="regex_id"/>
+	    </group>
+	    <group>
+             <field name="number"/>
+             <field name="provider_id"/>
+	    </group>
+	  </group>
+	 </sheet>
+        </form>
+      </field>
+    </record>
+    
+    <!-- payment_mobile list view definition -->
+    
+    <record model="ir.ui.view" id="mobile_accounts_list">
+      <field name="name">mobile accounts list</field>
+      <field name="model">mobile.accounts</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="number"/>
+          <field name="provider_id"/>
+          <field name="create_uid"/>
+          <field name="create_date"/>
+        </tree>
+      </field>
+    </record>
+    
+
+    <!-- actions opening views on models -->
+    
+    <record model="ir.actions.act_window" id="mobile_accounts_action_window">
+      <field name="name">Mobile Accounts</field>
+      <field name="res_model">mobile.accounts</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    
+
+    <!-- server action to the one above -->
+    <!--
+    <record model="ir.actions.server" id="payment_mobile.action_server">
+      <field name="name">payment_mobile server</field>
+      <field name="model_id" ref="model_payment_mobile_payment_mobile"/>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": self._name,
+        }
+      </field>
+    </record>
+    -->
+  
+    <!--  menu item -->
+    
+    <menuitem name="Mobile Accounts" id="mobile_accounts_root_menu" action="mobile_accounts_action_window" parent="payment.root_payment_menu"/>
+    
+    <!-- menu categories -->
+    <!--
+    <menuitem name="Menu 1" id="payment_mobile.menu_1" parent="payment_mobile.menu_root"/>
+    <menuitem name="Menu 2" id="payment_mobile.menu_2" parent="payment_mobile.menu_root"/>
+    -->
+    <!-- actions -->
+    <!--
+    <menuitem name="List" id="payment_mobile.menu_1_list" parent="payment_mobile.menu_1"
+              action="payment_mobile.action_window"/>
+    <menuitem name="Server to list" id="payment_mobile" parent="payment_mobile.menu_2"
+              action="payment_mobile.action_server"/>
+    -->
+  </data>
+</openerp>
