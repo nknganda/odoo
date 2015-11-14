@@ -102,7 +102,7 @@ class PurchaseOrder(models.Model):
              "It's used to do the matching when you receive the "
              "products as this reference is usually written on the "
              "delivery order sent by your vendor.")
-    date_order = fields.Datetime('Order Date', required=True, states=READONLY_STATES, select=True, copy=False, default=fields.Date.context_today,\
+    date_order = fields.Datetime('Order Date', required=True, states=READONLY_STATES, select=True, copy=False, default=fields.Datetime.now(),\
         help="Depicts the date where the Quotation should be validated and converted into a purchase order.")
     date_approve = fields.Date('Approval Date', readonly=1, select=True, copy=False)
     partner_id = fields.Many2one('res.partner', string='Vendor', required=True, states=READONLY_STATES, change_default=True, track_visibility='always')
@@ -285,6 +285,8 @@ class PurchaseOrder(models.Model):
                 if inv and inv.state not in ('cancel', 'draft'):
                     raise UserError(_("Unable to cancel this purchase order.i You must first cancel related vendor bills."))
 
+            for pick in order.picking_ids.filtered(lambda r: r.state != 'cancel'):
+                pick.action_cancel()
             if not self.env.context.get('cancel_procurement'):
                 procurements = order.order_line.mapped('procurement_ids')
                 procurements.filtered(lambda r: r.state not in ('cancel', 'exception') and r.rule_id.propagate).write({'state': 'cancel'})
@@ -439,13 +441,13 @@ class PurchaseOrderLine(models.Model):
             line.qty_received = total
 
     name = fields.Text(string='Description', required=True)
-    product_qty = fields.Float(string='Quantity', digits_compute=dp.get_precision('Product Unit of Measure'), required=True, default=1.0)
+    product_qty = fields.Float(string='Quantity', digits=dp.get_precision('Product Unit of Measure'), required=True, default=1.0)
     date_planned = fields.Datetime(string='Scheduled Date', required=True, select=True)
     taxes_id = fields.Many2many('account.tax', string='Taxes')
     product_uom = fields.Many2one('product.uom', string='Product Unit of Measure', required=True)
     product_id = fields.Many2one('product.product', string='Product', domain=[('purchase_ok', '=', True)], change_default=True, required=True)
     move_ids = fields.One2many('stock.move', 'purchase_line_id', string='Reservation', readonly=True, ondelete='set null', copy=False)
-    price_unit = fields.Float(string='Unit Price', required=True, digits_compute=dp.get_precision('Product Price'))
+    price_unit = fields.Float(string='Unit Price', required=True, digits=dp.get_precision('Product Price'))
 
     price_subtotal = fields.Monetary(compute='_compute_amount', string='Subtotal', store=True)
     price_total = fields.Monetary(compute='_compute_amount', string='Total', store=True)
@@ -554,28 +556,11 @@ class PurchaseOrderLine(models.Model):
     def onchange_product_id(self):
         result = {}
         if not self.product_id:
-            return {}
+            return result
 
         if self.product_id.uom_id.category_id.id != self.product_uom.category_id.id:
             self.product_uom = self.product_id.uom_po_id
         result['domain'] = {'product_uom': [('category_id', '=', self.product_id.uom_id.category_id.id)]}
-
-        seller = self.product_id._select_seller(
-            self.product_id,
-            partner_id=self.partner_id,
-            quantity=self.product_qty,
-            date=self.order_id.date_order and self.order_id.date_order[:10],
-            uom_id=self.product_uom)
-
-        fpos = self.order_id.fiscal_position_id
-        self.taxes_id = fpos.map_tax(self.product_id.supplier_taxes_id)
-
-        price_unit = self.env['account.tax']._fix_tax_included_price(seller.price, self.product_id.supplier_taxes_id, self.taxes_id) if seller else 0.0
-        if price_unit and seller and self.order_id.currency_id and seller.currency_id != self.order_id.currency_id:
-            price_unit = seller.currency_id.compute(price_unit, self.order_id.currency_id)
-        self.price_unit = price_unit
-        if seller or not self.date_planned:
-            self.date_planned = self._get_date_planned(seller).strftime(DEFAULT_SERVER_DATETIME_FORMAT)
 
         product_lang = self.product_id.with_context({
             'lang': self.partner_id.lang,
@@ -584,6 +569,29 @@ class PurchaseOrderLine(models.Model):
         self.name = product_lang.display_name
         if product_lang.description_purchase:
             self.name += '\n' + product_lang.description_purchase
+
+        seller = self.product_id._select_seller(
+            self.product_id,
+            partner_id=self.partner_id,
+            quantity=self.product_qty,
+            date=self.order_id.date_order and self.order_id.date_order[:10],
+            uom_id=self.product_uom)
+
+        if seller or not self.date_planned:
+            self.date_planned = self._get_date_planned(seller).strftime(DEFAULT_SERVER_DATETIME_FORMAT)
+
+        if not seller:
+            return result
+
+        fpos = self.order_id.fiscal_position_id
+        self.taxes_id = fpos.map_tax(self.product_id.supplier_taxes_id)
+
+        price_unit = self.env['account.tax']._fix_tax_included_price(seller.price, self.product_id.supplier_taxes_id, self.taxes_id) if seller else 0.0
+        if price_unit and seller and self.order_id.currency_id and seller.currency_id != self.order_id.currency_id:
+            price_unit = seller.currency_id.compute(price_unit, self.order_id.currency_id)
+        self.price_unit = price_unit
+
+        return result
 
 
 class ProcurementRule(models.Model):

@@ -8,8 +8,27 @@ from openerp.tools.float_utils import float_compare
 class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
 
-    purchase_id = fields.Many2one('purchase.order', string='Add Purchase Order', domain=[('invoice_status', '=', 'to invoice')],
+    purchase_id = fields.Many2one('purchase.order', string='Add Purchase Order',
         help='Encoding help. When selected, the associated purchase order lines are added to the vendor bill. Several PO can be selected.')
+
+    @api.onchange('state', 'partner_id', 'invoice_line_ids')
+    def _onchange_allowed_purchase_ids(self):
+        '''
+        The purpose of the method is to define a domain for the available
+        purchase orders.
+        '''
+        result = {}
+
+        # A PO can be selected only if at least one PO line is not already in the invoice
+        purchase_line_ids = self.invoice_line_ids.mapped('purchase_line_id')
+        purchase_ids = self.invoice_line_ids.mapped('purchase_id').filtered(lambda r: r.order_line <= purchase_line_ids)
+
+        result['domain'] = {'purchase_id': [
+            ('invoice_status', '=', 'to invoice'),
+            ('partner_id', 'child_of', self.partner_id.id),
+            ('id', 'not in', purchase_ids.ids),
+            ]}
+        return result
 
     # Load all unsold PO lines
     @api.onchange('purchase_id')
@@ -37,6 +56,9 @@ class AccountInvoice(models.Model):
             })
 
         for line in self.purchase_id.order_line:
+            # Load a PO line only once
+            if line in self.invoice_line_ids.mapped('purchase_line_id'):
+                continue
             if line.product_id.purchase_method == 'purchase':
                 qty = line.product_qty - line.qty_invoiced
             else:
@@ -113,7 +135,7 @@ class AccountInvoice(models.Model):
                             if valuation_stock_move:
                                 valuation_price_unit = valuation_stock_move[0].price_unit
                         if inv.currency_id.id != company_currency.id:
-                            valuation_price_unit = company_currency.compute(inv.currency_id, valuation_price_unit, context={'date': inv.date_invoice})
+                            valuation_price_unit = company_currency.with_context(date=inv.date_invoice).compute(inv.currency_id, valuation_price_unit)
                         if valuation_price_unit != i_line.price_unit and line['price_unit'] == i_line.price_unit and acc:
                             # price with discount and without tax included
                             price_unit = i_line.price_unit * (1 - (i_line.discount or 0.0) / 100.0)

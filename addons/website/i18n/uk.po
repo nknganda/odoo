@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Odoo 9.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-10-09 09:18+0000\n"
-"PO-Revision-Date: 2015-10-18 14:31+0000\n"
+"PO-Revision-Date: 2015-11-07 10:38+0000\n"
 "Last-Translator: Bogdan\n"
 "Language-Team: Ukrainian (http://www.transifex.com/odoo/odoo-9/language/uk/)\n"
 "MIME-Version: 1.0\n"
@@ -48,7 +48,7 @@ msgstr ""
 msgid ""
 ",\n"
 "                                updated:"
-msgstr ""
+msgstr ",\nоновлено"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.layout_footer_copyright
@@ -60,12 +60,12 @@ msgstr ""
 #. module: website
 #: model:ir.ui.view,arch_db:website.show_website_info
 msgid ", author:"
-msgstr ""
+msgstr ", автор:"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.show_website_info
 msgid ", updated:"
-msgstr ""
+msgstr ", оновлено:"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
@@ -91,7 +91,7 @@ msgstr "1. Додайте Ваші <strong>бажані мови</strong><br/>\n
 #: code:addons/website/static/src/xml/website.seo.xml:28
 #, python-format
 msgid "1. Define Keywords"
-msgstr "1. Визначити ключові слова"
+msgstr "1. Визначте ключові слова"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.snippet_options
@@ -111,19 +111,19 @@ msgstr ""
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid "2. <strong>Setup Gengo</strong><br/>"
-msgstr ""
+msgstr "2. <strong>Встановити Gengo</strong><br/>"
 
 #. module: website
 #. openerp-web
 #: code:addons/website/static/src/xml/website.seo.xml:56
 #, python-format
 msgid "2. Reference Your Page"
-msgstr ""
+msgstr "2. Дайте посилання на вашу сторінку"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.s_comparisons
 msgid "24x7 toll-free support"
-msgstr ""
+msgstr "24x7 безплатна підтримка"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.snippet_options
@@ -135,7 +135,7 @@ msgstr ""
 #: code:addons/website/static/src/xml/website.seo.xml:73
 #, python-format
 msgid "3. Preview"
-msgstr ""
+msgstr "3. Попередній перегляд"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.snippet_options
@@ -145,12 +145,12 @@ msgstr ""
 #. module: website
 #: model:ir.ui.view,arch_db:website.403
 msgid "403: Forbidden"
-msgstr ""
+msgstr "403: Заборонено"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.404
 msgid "404: Page not found!"
-msgstr ""
+msgstr "404: Сторінку не знайдено!"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.snippet_options
@@ -160,12 +160,12 @@ msgstr ""
 #. module: website
 #: model:ir.ui.view,arch_db:website.s_big_picture
 msgid "<b>A Small Subtitle</b>"
-msgstr ""
+msgstr "<b>Маленькі субтитри</b>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.snippet_options
 msgid "<b>Choose an image...</b>"
-msgstr ""
+msgstr "<b>Виберіть зображення...</b>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.s_text_block
@@ -174,7 +174,7 @@ msgid ""
 "                        just one person.</b> If you try to write with a wide general\n"
 "                        audience in mind, your story will ring false and be bland.\n"
 "                        No one will be interested. Write for one person. If it’s genuine for the one, it’s genuine for the rest."
-msgstr ""
+msgstr "<b>Чудові історії написані для всіх, навіть якщо присвячені \nлише одній людині.</b> Коли намагаєшся писати для широкого \nзагалу, історія здається неправдивою і беземоційною. \nВона нікого не зацікавить. Пишіть для однієї людини. Якщо історія справжня для одного, - вона буде справжньою і для решти."
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.s_text_block
@@ -185,41 +185,41 @@ msgid ""
 "                        making a relationship connection. This shows up in small\n"
 "                        quirks like word choices or phrases. Write from your point\n"
 "                        of view, not from someone else's experience."
-msgstr ""
+msgstr "<b>Чудові історії мають індивідуальність.</b> Розкажіть \nісторію, що несе в собі індивідуальність. \nНаписання \nтакої історії для потенційних клієнтів сприятиме \nвстановленню відносин.\nЦе виражається в маленьких дотепах, \nна зразок гри слів чи виразів. Пишіть орієнтуючись на власну точку \nзору, а не на чийсь досвід."
 
 #. module: website
 #: model:ir.actions.act_window,help:website.action_module_theme
 msgid "<b>No theme module found!</b>"
-msgstr ""
+msgstr "<b>Тематичні модулі не знайдено!</b>"
 
 #. module: website
 #: model:ir.actions.act_window,help:website.action_module_website
 msgid "<b>No website module found!</b>"
-msgstr ""
+msgstr "<b>Модулі веб-сайту не знайдено!</b>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.show_sign_in
 msgid "<b>Sign in</b>"
-msgstr ""
+msgstr "<b>Увійти</b>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.s_button
 msgid ""
 "<i class=\"fa fa-arrow-right\"/>\n"
 "                        Contact Us Now"
-msgstr ""
+msgstr "<i class=\"fa fa-arrow-right\"/>\nЗв'яжіться з нами"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.language_selector
 msgid ""
 "<i class=\"fa fa-plus-circle\"/>\n"
 "                Add a language..."
-msgstr ""
+msgstr "<i class=\"fa fa-plus-circle\"/>\nДодати мову..."
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.user_navbar
 msgid "<i class=\"fa fa-th-large\"/> Website<b class=\"caret\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-th-large\"/> Веб-сайт<b class=\"caret\"/>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
@@ -227,7 +227,7 @@ msgid ""
 "<i>\n"
 "                        The whole process may take a few hours, some discussions with your colleagues and\n"
 "                    several cups of coffee to go through. But don't worry, you can return to this tool at any time.</i>"
-msgstr ""
+msgstr "<i>\nУвесь процес може зайняти декілька годин, пару балачок з колегами та кілька чашок кави.\nТа не хвилюйтесь, Ви можете повернутися до цього інструмента в любий момент.</i>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
@@ -235,31 +235,31 @@ msgid ""
 "<i>\n"
 "                        Whether you're a beginner or a pro, we have everything you need to plan, create,\n"
 "                    publish and grow your site, blog or online store.</i>"
-msgstr ""
+msgstr "<i>\nНеважливо, початківець Ви чи профі, у нас є все необхідне для планування, створення та\n запуску Вашого сайту, блогу чи інтернет-магазину.</i>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid ""
 "<i>\n"
 "                    This Planner will help you to think about your website and provide tips and ideas to inspire you. There are examples and explanations to guide you through the process of creating a top-notch, high quality site that meets all your needs.</i>"
-msgstr ""
+msgstr "<i>\nДаний Плановик допоможе Вам задумати власний сайт і дасть поради та ідеї для натхнення. Тут є приклади та пояснення, щоб провести Вас крізь процес створення першокласного, високоякісного сайту, що відповідатиме всім Вашим потребам.</i>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid ""
 "<i>Congratulations on taking the leap and deciding to build your own "
 "website!</i>"
-msgstr ""
+msgstr "<i>Вітаємо, Ви зробили крок вперед, прийнявши рішення створити власний сайт!</i>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.s_comparisons
 msgid "<i>Instant setup, satisfied or reimbursed.</i>"
-msgstr ""
+msgstr "<i>Швидка інсталяція, вибіркові чи відновлення.</i>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid "<i>We wish you a fun time!</i>"
-msgstr ""
+msgstr "<i>Бажаємо Вам гарно розважитись!</i>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.s_image_floating
@@ -268,7 +268,7 @@ msgid ""
 "<small class=\"text-muted\">A great way to catch your reader's attention is "
 "to tell a story. Everything you consider writing can be told as a "
 "story.</small>"
-msgstr ""
+msgstr "<small class=\"text-muted\">Чудовий спосіб привернути увагу читача - розповісти історію. Все, що Ви збираєтесь написати можна розповісти як історію.</small>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.s_parallax_slider
@@ -276,53 +276,53 @@ msgstr ""
 #: model:ir.ui.view,arch_db:website.s_quotes_slider
 #: model:ir.ui.view,arch_db:website.s_references
 msgid "<small>Author of this quote</small>"
-msgstr ""
+msgstr "<small>Автор цієї цитати</small>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.s_parallax_slider
 #: model:ir.ui.view,arch_db:website.s_quotes_slider
 #: model:ir.ui.view,arch_db:website.s_references
 msgid "<small>John Doe, CEO</small>"
-msgstr ""
+msgstr "<small>John Doe, Генеральний директор</small>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid "<span class=\"fa fa-arrow-circle-o-down\"/> Install now"
-msgstr ""
+msgstr "<span class=\"fa fa-arrow-circle-o-down\"/> Встановити зараз"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid "<span class=\"fa fa-comment-o\"/> Website Live Chat on"
-msgstr ""
+msgstr "<span class=\"fa fa-comment-o\"/> Онлайн-чат увімкнено"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid "<span class=\"fa fa-envelope-o\"/> Email Our Website Expert"
-msgstr ""
+msgstr "<span class=\"fa fa-envelope-o\"/> Напишіть нашому експерту "
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid ""
 "<span class=\"fa fa-lightbulb-o fa-2x\"/>\n"
 "                                <strong>Tips for a good domain:</strong>"
-msgstr ""
+msgstr "<span class=\"fa fa-lightbulb-o fa-2x\"/>\n<strong>Рекомендації щодо домену:</strong>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid ""
 "<span class=\"fa fa-lightbulb-o fa-2x\"/>\n"
 "                        <span>Try to limit yourself to 1 testing variable, otherwise you won't be able to clearly interpret the results of your modifications.</span>"
-msgstr ""
+msgstr "<span class=\"fa fa-lightbulb-o fa-2x\"/>\n<span>Спробуйте обмежитись 1-м змінним тестуванням, інакше Ви не зможете ясно тлумачити результати Ваших модифікацій.</span>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid "<span class=\"fa fa-thumbs-o-down\"/> <strong> Bad practices</strong>"
-msgstr ""
+msgstr "<span class=\"fa fa-thumbs-o-down\"/> <strong> Не рекомендується</strong>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid "<span class=\"fa fa-thumbs-o-up\"/> <strong> Good practices</strong>"
-msgstr ""
+msgstr "<span class=\"fa fa-thumbs-o-up\"/> <strong> Рекомендується</strong>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.snippets
@@ -330,7 +330,7 @@ msgid ""
 "<span class=\"fa-stack\">\n"
 "            <i class=\"fa fa-align-justify fa-stack-1x\"/>\n"
 "        </span> Content"
-msgstr ""
+msgstr "<span class=\"fa-stack\">\n<i class=\"fa fa-align-justify fa-stack-1x\"/>\n</span> Вміст"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.snippets
@@ -338,7 +338,7 @@ msgid ""
 "<span class=\"fa-stack\">\n"
 "            <i class=\"fa fa-paper-plane fa-stack-1x\"/>\n"
 "        </span> Effect"
-msgstr ""
+msgstr "<span class=\"fa-stack\">\n<i class=\"fa fa-paper-plane fa-stack-1x\"/>\n</span> Результат"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.snippets
@@ -346,7 +346,7 @@ msgid ""
 "<span class=\"fa-stack\">\n"
 "            <i class=\"fa fa-pie-chart fa-stack-1x\"/>\n"
 "        </span> Feature"
-msgstr ""
+msgstr "<span class=\"fa-stack\">\n<i class=\"fa fa-pie-chart fa-stack-1x\"/>\n</span> Властивість"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.snippets
@@ -354,7 +354,7 @@ msgid ""
 "<span class=\"fa-stack\">\n"
 "            <i class=\"fa fa-th-large fa-stack-1x\"/>\n"
 "        </span> Structure"
-msgstr ""
+msgstr "<span class=\"fa-stack\">\n<i class=\"fa fa-th-large fa-stack-1x\"/>\n</span> Структура"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
@@ -363,7 +363,7 @@ msgid ""
 "                                        <span class=\"fa fa-cogs\"/>\n"
 "                                        <strong>Machine translation</strong><br/>Free, but quality may vary\n"
 "                                    </span>"
-msgstr ""
+msgstr "<span class=\"panel-title\">\n<span class=\"fa fa-cogs\"/>\n<strong>Машинний переклад</strong><br/>Безплатний, але мінливий по якості\n</span>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
@@ -372,21 +372,21 @@ msgid ""
 "                                        <span class=\"fa fa-user\"/>\n"
 "                                        <strong>Human translation</strong><br/>Pay for professionnal quality\n"
 "                                    </span>"
-msgstr ""
+msgstr "<span class=\"panel-title\">\n<span class=\"fa fa-user\"/>\n<strong>Переклад, виконаний людиною</strong><br/>Сплачуйте за професійну якість\n</span>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid ""
 "<span class=\"panel-title\"><span class=\"fa fa-code\"/><strong> 2. "
 "Customize its appearance</strong></span>"
-msgstr ""
+msgstr "<span class=\"panel-title\"><span class=\"fa fa-code\"/><strong> 2. Налаштувати вигляд</strong></span>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid ""
 "<span class=\"panel-title\"><span class=\"fa fa-magic\"/><strong> 1. Choose "
 "your theme</strong></span>"
-msgstr ""
+msgstr "<span class=\"panel-title\"><span class=\"fa fa-magic\"/><strong> 1. Вибрати тему</strong></span>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.layout
@@ -395,44 +395,44 @@ msgid ""
 "                                    <span class=\"icon-bar\"/>\n"
 "                                    <span class=\"icon-bar\"/>\n"
 "                                    <span class=\"icon-bar\"/>"
-msgstr ""
+msgstr "<span class=\"sr-only\">Управління перемикачем</span>\n<span class=\"icon-bar\"/>\n<span class=\"icon-bar\"/>\n<span class=\"icon-bar\"/>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.user_navbar
 msgid "<span title=\"Edit Top Menu\">Edit Menu</span>"
-msgstr ""
+msgstr "<span title=\"Edit Top Menu\">Редагувати Меню</span>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.user_navbar
 msgid ""
 "<span title=\"Optimize your AdWords account\">Optimize AdWords "
 "Campaign</span>"
-msgstr ""
+msgstr "<span title=\"Optimize your AdWords account\">Оптимізувати кампанію AdWords </span>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.user_navbar
 msgid "<span title=\"Promote page on the web\">Optimize SEO</span>"
-msgstr ""
+msgstr "<span title=\"Promote page on the web\">Оптимізувати SEO</span>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.s_comparisons
 msgid "<span>$</span><b style=\"font-size: 60px\">125</b><small>.00</small>"
-msgstr ""
+msgstr "<span>$</span><b style=\"font-size: 60px\">125</b><small>.00</small>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.s_comparisons
 msgid "<span>$</span><b style=\"font-size: 60px\">35</b><small>.00</small>"
-msgstr ""
+msgstr "<span>$</span><b style=\"font-size: 60px\">35</b><small>.00</small>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.s_comparisons
 msgid "<span>$</span><b style=\"font-size: 60px\">65</b><small>.00</small>"
-msgstr ""
+msgstr "<span>$</span><b style=\"font-size: 60px\">65</b><small>.00</small>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid "<span>3. Select a <strong>translation method</strong></span>"
-msgstr ""
+msgstr "<span>3. Виберіть <strong>метод перекладу</strong></span>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
@@ -440,7 +440,7 @@ msgid ""
 "<strong>... and your location too!</strong><br/>\n"
 "                                Millions of people use Google Maps everyday. Whether you are a restaurant\n"
 "                                or a huge business, you have no excuse not to register your location in"
-msgstr ""
+msgstr "<strong>... і Ваше місцезнаходження теж!</strong><br/>\nМільйони людей користуються Google Картами щодня. Неважливо,\nу Вас ресторан чи великомасштабний бізнес,- Вам слід зареєструвати\nсвоє місцезнаходження у"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
@@ -451,14 +451,14 @@ msgid ""
 "                                improving something that brings you no ROI). Then, find the best page to\n"
 "                                test and the variation you think will bring the best results.Here are a\n"
 "                                few examples of good testing variables:"
-msgstr ""
+msgstr "<strong>1. Визначте, що перевіряти</strong><br/>\nВаш вибір того, що перевіряти буде, очевидно, залежати від Вашої мети,\nале має завжди бути пов'язаним з метою Вашої справи (не витрачайте \nенергію, вдосконалюючи те, що не приносить Вам ROI). Потім знайдіть\n найкращу сторінку для перевірки і варіант, який, на Вашу думку, принесе \nнайкращі результати. Ось декілька прикладів хорошої перевірки змінних:"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid ""
 "<strong>1. Your main menu items</strong> and 2. Your secondary menu items "
 "(optional):"
-msgstr ""
+msgstr "<strong>1. Елементи Вашого головного меню </strong> та 2. Елементи Вашого допоміжного меню (додатково):"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
@@ -467,14 +467,14 @@ msgid ""
 "                                Once you're clear on the measurable objective, the page and the variable\n"
 "                                you want to test, duplicate the page in Odoo using the <strong>'Versions'</strong>\n"
 "                                menu and apply the modification you decided."
-msgstr ""
+msgstr "<strong>2. Створіть варіант сторінки</strong><br/>\nПісля того, як Ви визначитесь із задачею, сторінкою та змінною, які Ви хочете\nперевірити, скопіюйте сторінку в Odoo, використовуючи <strong>\"Варіанти\"</strong> \nменю та застосуйте редагування."
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid ""
 "<strong>3. Configure a Google Analytics account</strong><br/>\n"
 "                                This is necessary in order to record the statistics of your test."
-msgstr ""
+msgstr "<strong>3. Налаштуйте обліковий запис Google Analytics </strong><br/>\nЦе необхідно для ведення статистики Ваших тестів."
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
@@ -487,17 +487,17 @@ msgid ""
 "<strong>4. Create your campaign in Google Analytics</strong><br/>\n"
 "                                Simply follow the wizard by creating a new experiment in the <strong>Behavior &gt;\n"
 "                                Experiments</strong> menu of"
-msgstr ""
+msgstr "<strong>4. Створіть свою кампанію в Google Analytics</strong><br/>\nПросто слідуйте програмі, створюючи новий експеримент у <strong>Поведінка &gt;\nЕксперименти</strong> меню"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.s_button
 msgid "<strong>50,000+ companies run Odoo to grow their businesses.</strong>"
-msgstr ""
+msgstr "<strong>50,000+ компаній розвивають свій бізнес з Odoo.</strong>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid "<strong>Activate now</strong> the optional modules you'll need:"
-msgstr ""
+msgstr "<strong>Активуйте зараз</strong> необхідні додаткові модулі:"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
@@ -506,7 +506,7 @@ msgid ""
 "                                You can put more content in the intermediate section of your homepage (one\n"
 "                                or two scrolls down from the visible section), but try to keep your\n"
 "                                paragraphs easy to read and avoid 'walls of text'."
-msgstr ""
+msgstr "<strong>Додайте властивості та контент</strong><br/>\nВи можете викласти більше контенту на Вашій домашній сторінці\n(одне або два прокручування вниз від видимого розділу), \nале намагайтеся залишати параграфи легкими для читання і уникати \"стінок тексту\"."
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
@@ -543,43 +543,43 @@ msgstr ""
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid "<strong>Blogs</strong>"
-msgstr ""
+msgstr "<strong>Блоги</strong>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.s_image_floating
 #: model:ir.ui.view,arch_db:website.s_text_image_floating
 msgid "<strong>Click Here</strong>"
-msgstr ""
+msgstr "<strong>Натисніть тут</strong>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid "<strong>Community builder</strong>"
-msgstr ""
+msgstr "<strong>Творець спільноти</strong>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid "<strong>Contact form</strong>"
-msgstr ""
+msgstr "<strong>Форма зв'язку</strong>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid "<strong>Contact us for a custom-made theme:</strong>"
-msgstr ""
+msgstr "<strong>Зверніться до нас за темою на замовлення:</strong><br/>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid "<strong>Contact us now:</strong><br/>"
-msgstr ""
+msgstr "<strong>Зв'яжіться з нами зараз:</strong><br/>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid "<strong>Create an online Q&amp;A</strong>"
-msgstr ""
+msgstr "<strong>Створити онлайновий Q&amp;A</strong>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid "<strong>Discuss live</strong>"
-msgstr ""
+msgstr "<strong>Обговорення наживо</strong>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
@@ -588,7 +588,7 @@ msgid ""
 "                                Below your main banner or call-to-action, it's a good practice to put\n"
 "                                social proofs about your products or services; customer quotes, videos,\n"
 "                                photos of your products in actions, twitter quotes, etc."
-msgstr ""
+msgstr "<strong>Показати </strong><br/>\nПід Вашим головним банером чи \"закликом до дії\", варто встановити\nсоціальні рекомендації Ваших продуктів чи послуг; відгуки клієнтів, відео, \nфото продуктів в дії, твіти і т.д."
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
@@ -598,7 +598,7 @@ msgid ""
 "                                positive result. The key to optimizing conversion rates is to do a ton of A/B\n"
 "                                tests, so that all positive results add up to a huge boost to your sales and\n"
 "                                achieved goals."
-msgstr ""
+msgstr "<strong>Робіть багато A/B-тестів.</strong><br/>\nЦілком вірогідно, що Ваш перший A/B-тест виявиться невдалим. Не опускайте рук. У A/B-тестів є всього три види результатів: ніякого,\nнегативний і позитивний. Ключ до збільшення конверсії - провести \nмасу A/B-тестів, щоб всі позитивні результати об'єдналися в потужний\nсплеск продажів та досягнутих цілей."
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
@@ -606,7 +606,7 @@ msgid ""
 "<strong>Don't test versions at different time periods.</strong><br/>If you\n"
 "                                test one version one week and the second the next, your results won't be\n"
 "                                accurate, or worse, wrong!"
-msgstr ""
+msgstr "<strong>Не тестуйте версії в різний час.</strong><br/>\nЯкщо Ви тестуєте одну версію одного тижня, а іншу - наступного, \nрезультати не будуть точними, чи навіть гірше, - хибними!"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
@@ -614,7 +614,7 @@ msgid ""
 "<strong>Don’t conclude too early.</strong><br/>\n"
 "                                Wait for your test results to be significant. Take a look at the statistical\n"
 "                                confidence in Google Analytics, it should be at least 95%."
-msgstr ""
+msgstr "<strong>Не завершуйте надто рано.</strong><br/>\nЗачекайте поки результати стануть знаковими. Перегляньте статистику довіри в Google Analytics, вона має бути принаймні 95%."
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
@@ -623,7 +623,7 @@ msgid ""
 "                                If you are testing a core part of your website, include only new visitors in\n"
 "                                the test. You want to avoid shocking regular visitors, especially because the\n"
 "                                variations may not ultimately be implemented."
-msgstr ""
+msgstr "<strong>Не дивуйте постійних відвідувачів.</strong><br/>\nЯкщо Ви тестуєте основну частину сайту, залучайте до тестування лише \nнових відвідувачів. Не потрібно шокувати постійних відвідувачів, особливо \nчерез те, що варіації можуть не бути реалізовані повністю."
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
@@ -633,19 +633,19 @@ msgid ""
 "                                the page that gets the most visitors.<br/>\n"
 "                                It's good practice to try to engage with your visitors on the homepage:\n"
 "                                Contact Us, Subscribe to Get More Information, Check the Catalog, etc."
-msgstr ""
+msgstr "<strong>Заохотьте до дії</strong><br/>\nДодайте один, і тільки один \"заклик до дії\" на домашній сторінці. \nНа Вашу домашню сторінку потрапляє найбільше відвідувачів.<br/>\nДобре було б спробувати привабити відвідувачів на домашній сторінці: Зв'яжіться з нами, Підпишіться на новини, Перегляньте каталог і т.д.."
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.http_error_debug
 msgid "<strong>Error message:</strong>"
-msgstr ""
+msgstr "<strong>Повідомлення про помилку:</strong>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid ""
 "<strong>Find 3 websites that you like</strong> and write down what you like "
 "about them."
-msgstr ""
+msgstr "<strong>Знайдіть 3 сайти, що Вам сподобались</strong> та напишіть чим саме."
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
@@ -653,12 +653,12 @@ msgid ""
 "<strong>Find a catchy headline</strong><br/>\n"
 "                                Make sure anyone who visits your site understands what it’s about without having to do a lot of reading.<br/>\n"
 "                                To do that, the visible section of your homepage (above the fold) needs to be simple and straightforward. For example, use pictures of your work, screenshots of your app, a short and catchy hook."
-msgstr ""
+msgstr "<strong>Придумайте привабливий заголовок</strong><br/>\nВпевніться, що кожен відвідувач Вашого сайту зрозуміє про що йде мова, не читаючи багато.<br/>\nДля цього, видима частина домашньої сторінки має бути простою і зрозумілою. Використовуйте, наприклад, зображення своїх робіт, скріншоти додатків,  короткі та привабливі характеристики."
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid "<strong>How to get a custom domain name ?</strong><br/>"
-msgstr ""
+msgstr "<strong>Як отримати унікальний домен?</strong><br/>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
@@ -673,7 +673,7 @@ msgstr ""
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid "<strong>Jobs</strong>"
-msgstr ""
+msgstr "<strong>Завдання</strong>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
@@ -682,12 +682,12 @@ msgid ""
 "                                Giving up too early can cost you because you may have gotten meaningful\n"
 "                                results had you waited a little longer. Giving up too late isn’t good either,\n"
 "                                because poorly performing variations could cost you conversions and sales."
-msgstr ""
+msgstr "<strong>Дізнайтесь, скільки часу триватиме тест перш ніж здатися.</strong><br/>\nЗупинившись надто рано, Ви можете не отримати важливих результатів, \nніж якби зачекали трохи більше. Зупинитися пізніше - теж не варіант, адже \nВи ризикуєте конверсією й продажами при поганому застосуванню змін."
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid "<strong>Now try to write down you footer structure:</strong>"
-msgstr ""
+msgstr "<strong>Тепер спробуйте записати структуру футера сайту:</strong>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
@@ -695,12 +695,12 @@ msgid ""
 "<strong>Optimize your content</strong><br/>\n"
 "                                Writing content that includes frequently searched-for keywords and phrases\n"
 "                                tends to increase  traffic to your website."
-msgstr ""
+msgstr "<strong>Оптимізуйте Ваш контент</strong><br/>\nНаписання контенту, в якому вживаються частозапитувані \nключові слова та фрази, - збільшує кількість трафіку на Ваш сайт."
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid "<strong>Organize physical events</strong>"
-msgstr ""
+msgstr "<strong>Організуйте події</strong>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
@@ -710,7 +710,7 @@ msgid ""
 "                                of  visitors by referencing your images so they are displayed in image\n"
 "                                search engines, like Google Images. To do that, simply add an 'Alt text'\n"
 "                                containing descriptions and keywords for relevant pictures."
-msgstr ""
+msgstr "<strong>Додавайте посилання на зображення...</strong><br/>\nЯкщо Ви художник чи фотограф, Ви можете отримати багато \nвідвідувачів через посилання на свої зображення таким чином, що вони \nвідображатимуться в системах пошуку зображень, наприклад Google Images. \nДля цього, просто додайте опис та ключові слова для схожих зображень."
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
@@ -720,12 +720,12 @@ msgid ""
 "                                added regularly. This is why starting a blog is an excellent way of\n"
 "                                improving your search ranking. If you have the time and dedication to write\n"
 "                                good articles,"
-msgstr ""
+msgstr "<strong>Розпочніть свій блог</strong><br/>\nGoogle любить сайти, які часто оновлюються чи на яких контент публікується регулярно. Ось чому, створення блогу - чудовий спосіб покращити свою позицію в пошуковій видачі. Якщо у Вас є час та бажання писати хороші статті"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid "<strong>The big launch</strong><br/>"
-msgstr ""
+msgstr "<strong>Великий запуск</strong><br/>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
@@ -734,55 +734,55 @@ msgid ""
 "                                This tool will help you understand your search traffic and learn how users\n"
 "                                are finding your site and make optimizations to help Google better\n"
 "                                understand and represent your site."
-msgstr ""
+msgstr "<strong>Користуйтеся Google Webmaster</strong><br/>\nЦей інструмент допоможе зрозуміти Ваш пошуковий трафік \nта дізнатися, як користувачі знаходять Ваш сайт, та дати оптимізації \nдопомогти Google краще сприйняти та представити Ваш сайт."
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid "<strong>Use contact forms:</strong>"
-msgstr ""
+msgstr "<strong>Скористайтеся формами зв'язку:</strong>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid ""
 "<strong>With that in mind, try to define the structure of your main "
 "menu:</strong>"
-msgstr ""
+msgstr "<strong>З думкою про це, визначте структуру Вашого головного меню:</strong>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid "<strong>You have your domain name ?</strong><br/>"
-msgstr ""
+msgstr "<strong>У Вас є домен?</strong><br/>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid "<strong>Your website objectives</strong> by priority:"
-msgstr ""
+msgstr "<strong>Цілі Вашого сайту</strong> за пріоритетністю:"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid "<strong>e-Commerce</strong>"
-msgstr ""
+msgstr "<strong>Електронна комерція</strong>"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid "@odoo"
-msgstr ""
+msgstr "@odoo"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.s_text_block
 msgid "A Great Headline"
-msgstr ""
+msgstr "Великий заголовок"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.s_big_picture
 msgid "A Punchy Headline"
-msgstr ""
+msgstr "Короткий заголовок"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.s_image_text
 #: model:ir.ui.view,arch_db:website.s_text_image
 msgid "A Section Subtitle"
-msgstr ""
+msgstr "Секційний підзаголовок"
 
 #. module: website
 #: model:ir.model.fields,help:website.field_ir_act_server_website_published
@@ -800,41 +800,41 @@ msgid ""
 "                        Because of that, your visitors won't see it immediately so it's very useful for linking\n"
 "                        pages you don't want in your main menu e.g. social media, terms and conditions, privacy\n"
 "                        terms, etc."
-msgstr ""
+msgstr "Футер, або підвал, розміщується в самому низу сайта. \nЧерез це, відвідувачі не побачать його відразу, тож він корисний прив'язкою \nдо сторінок, котрі не потрібні Вам в головному меню, наприклад: \nсоціальні мережі, правила й умови,  конфіденційність і т.д.."
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.s_text_block
 msgid "A good subtitle"
-msgstr ""
+msgstr "Хороший підзаголовок"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid ""
 "A good way to start is to use machine translation then apply corrections "
 "yourself."
-msgstr ""
+msgstr "Хороший спосіб для початку - скористатися машинним перекладом, а потім коригувати власноруч."
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.s_text_block
 msgid ""
 "A great way to catch your reader's attention is to tell a story.\n"
 "                        Everything you consider writing can be told as a story."
-msgstr ""
+msgstr "Чудовий спосіб привернути увагу читача - розповісти історію.\nВсе, що Ви збираєтесь написати можна розповісти як історію."
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.s_features
 msgid "A small explanation of this great<br/>feature, in clear words."
-msgstr ""
+msgstr "Маленьке пояснення великої<br/>характеристики простими словами."
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid "A/B Testing"
-msgstr ""
+msgstr "A/B-тестування"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website_config_settings_module_website_version
 msgid "A/B testing and versioning"
-msgstr ""
+msgstr "A/B-тестування і контроль версій"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
@@ -852,7 +852,7 @@ msgstr ""
 #: model:ir.ui.view,arch_db:website.aboutus
 #: model:ir.ui.view,arch_db:website.footer_default
 msgid "About us"
-msgstr ""
+msgstr "Про нас"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.s_comparisons
@@ -898,7 +898,7 @@ msgstr ""
 #. module: website
 #: model:ir.ui.view,arch_db:website.snippet_options
 msgid "Add Slide"
-msgstr ""
+msgstr "Додати слайд"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.s_feature_grid
@@ -1881,7 +1881,7 @@ msgstr "Фіксована"
 #. module: website
 #: model:ir.ui.view,arch_db:website.snippet_options
 msgid "Float"
-msgstr ""
+msgstr "число з комою"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.snippet_options
@@ -2229,7 +2229,7 @@ msgstr ""
 #: model:ir.ui.view,arch_db:website.user_navbar
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid "Install Apps"
-msgstr ""
+msgstr "Встановлені додатки"
 
 #. module: website
 #: model:ir.model,name:website.model_base_language_install
@@ -2367,7 +2367,7 @@ msgstr "Останнє оновлення"
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid "Launch"
-msgstr ""
+msgstr "Запустити"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
@@ -3001,7 +3001,7 @@ msgstr ""
 #: model:ir.ui.view,arch_db:website.publish_short
 #, python-format
 msgid "Published"
-msgstr ""
+msgstr "Опубліковано"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.snippet_options
