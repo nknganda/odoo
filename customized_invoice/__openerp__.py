@@ -32,6 +32,7 @@
         'views/modern_template.xml',
         'views/classic_template.xml',
         'views/retro_template.xml',
+        'views/tva_template.xml',
         'views/account_invoice_view.xml',
         'views/res_company_view.xml',
         'reports/reports.xml',
