@@ -31,7 +31,7 @@ class ir_ui_menu(osv.osv):
         context = {'ir.ui.menu.full_list': True}
         menus = self.with_context(context).search([])
 
-        groups = self.env.user.groups_id if debug else self.env.user.groups_id - self.env.ref('base.group_no_one')
+        groups = self.env.user.groups_id #if debug else self.env.user.groups_id - self.env.ref('base.group_no_one')
         # first discard all menus with groups the user does not have
         menus = menus.filtered(
             lambda menu: not menu.groups_id or menu.groups_id & groups)

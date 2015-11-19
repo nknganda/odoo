@@ -780,7 +780,7 @@ class groups_view(osv.osv):
                         field_name = name_boolean_group(g.id)
                         if g == group_no_one:
                             # make the group_no_one invisible in the form view
-                            xml2.append(E.field(name=field_name, invisible="1", **attrs))
+                            xml2.append(E.field(name=field_name, invisible="0", **attrs))
                         else:
                             xml2.append(E.field(name=field_name, **attrs))
 

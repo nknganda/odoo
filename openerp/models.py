@@ -1370,11 +1370,11 @@ class BaseModel(object):
         from openerp.http import request
         Users = self.pool['res.users']
         for group_ext_id in groups.split(','):
-            if group_ext_id == 'base.group_no_one':
+            #if group_ext_id == 'base.group_no_one':
                 # check: the group_no_one is effective in debug mode only
-                if Users.has_group(cr, uid, group_ext_id) and request and request.debug:
-                    return True
-            else:
+             #   if Users.has_group(cr, uid, group_ext_id) and request and request.debug:
+              #      return True
+            #else:
                 if Users.has_group(cr, uid, group_ext_id):
                     return True
         return False

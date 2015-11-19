@@ -32,6 +32,8 @@
         #'views/mobile_fields_view.xml',
         'views/regex_view.xml',
         'views/message_workflow.xml',
+        'views/mobile_acquirer_view.xml',
+        'views/mobile_acquirer_button.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

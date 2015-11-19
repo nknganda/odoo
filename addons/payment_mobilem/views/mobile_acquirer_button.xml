@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="0">
+<!--<template id="mobilem_assets_frontend" inherit_id="website_sale.assets_frontend" name="Mpesa">
+  <xpath expr="//script[contains(@src,'website_sale_payment.js')]" position="replace">
+      <script type="text/javascript" src="/payment_mobilem/static/src/js/website_sale_payment.js"></script>
+  </xpath>
+</template> -->
+<template id="mobilem_aquirer_inherit" inherit_id="website_sale.payment" name="Mobilem inherited payment">
+  <xpath expr="//img[contains(@t-att-src,'_icon.png')]" position="replace">
+  </xpath>
+  <xpath expr="//input[@name = 'acquirer']" position="after">
+    <t t-if="acquirer.image">
+	<span itemprop="image" t-att-title="acquirer.name" t-field="acquirer.image" 
+		t-field-options='{"widget": "image", "class": "media-object", "style": "width: 60px; display: inline-block;"}'/>
+    </t>
+    <t t-if="not acquirer.image">
+	<img class="media-object" style="width: 60px; display: inline-block;"
+                t-att-title="acquirer.name"
+                t-att-src="'/payment_%s/static/src/img/%s_icon.png' % (acquirer.provider, acquirer.provider)"/>
+    </t>
+  </xpath>
+</template>
+
+        <template id="mobilem_acquirer_button">
+            <form t-if="acquirer" t-att-action="tx_url" method="post" target="_self" id="MobilemForm">
+		<input id="csrf_token" type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                <t t-if="return_url">
+                    <input id="return_url" type='hidden' name='return_url' t-att-value='return_url'/>
+                </t>
+                <t t-if="acquirer.mobilem_account_id">
+		   <p/>Transaction No.<input type='text' required="" name='confirm_code' id="confirm_code"/><p/>
+                </t>
+		<t t-if="acquirer.mobilem_account_id">
+		  <div>
+		   <div><t t-esc="acquirer.mobilem_service_type"/>&#160;<span class="badge"><t t-esc="acquirer.mobilem_service_number"/></span></div>
+                   <div>Order No.&#160;<span class="badge"><t t-esc="reference"/></span></div>
+                   <div>Amount To Pay:&#160;<span class="badge"><t t-esc="amount"/> <t t-esc="currency.symbol"/></span></div>
+		  </div>
+		</t>
+		<p>Once you have finished making M-PESA payment, please click the button below to confirm your payment. 
+                    You will receive SMS notification within few minutes</p>
+                <input id="reference" type='hidden' name='reference' t-att-value='reference'/>
+                <input id="amount" type='hidden' name='amount' t-att-value='amount or "0.0"'/>
+                <input id="currency" type='hidden' name='currency' t-att-value='currency.name'/>
+                <input id="acquirer" type='hidden' name='acquirer' t-att-value='acquirer.id'/>
+                <!-- submit -->
+                <p/><button id="mobilem_submit" name="mobilem_submit" type="submit" width="100px"
+                    t-att-class="submit_class">
+                    <img t-if="not submit_txt" src="/payment_mobilem/static/src/img/mobilem_icon.png"/>
+                    <span t-if="submit_txt">Confirm Payment <span class="fa fa-long-arrow-right"/></span>
+                </button><p/>
+            </form>
+        </template>
+    </data>
+</openerp>
+

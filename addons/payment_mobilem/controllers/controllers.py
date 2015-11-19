@@ -7,8 +7,25 @@ from datetime import datetime, timedelta, tzinfo
 #import pprint
 _logger = logging.getLogger(__name__)
 
+
+class MobileMoneyFeedback(http.Controller):
+    _accept_url = '/payment/mobilem/feedback'
+    @http.route('/payment/mobilem/feedback', type='http', auth='public', methods=['POST'], website=True, csrf=False)
+    def mobilem_form_feedback(self, **post):
+        http.request.uid = SUPERUSER_ID
+        _logger.info('Beginning form_feedback with post data %s', post)
+        #if len(post.get('confirm_code')) < 9:
+         #  order_obj = request.registry.get('sale.order')
+          # order_obj._set_mpesa_data(post)
+           #_logger.info('SSSSSSSSSSSSSSSSSSSSSSSSS REDIRECTING COZ OF ERRORR with POST  as: %s', pprint.pformat(post))
+           #return request.redirect("/shop/payment")
+
+        http.request.registry['payment.transaction'].form_feedback(http.request.cr, http.request.uid, post, 'mobilem', http.request.context)
+        #return werkzeug.utils.redirect(post.pop('return_url', '/'))
+        return http.request.redirect(post.pop('return_url', '/'))
+
 class PaymentMobile(http.Controller):
-     @http.route('/payment_mobile', type='http', auth='none', methods=['POST'], csrf=False)
+     @http.route('/payment_mobilem', type='http', auth='none', methods=['POST'], csrf=False)
      def index(self, **kw):
 	 http.request.uid = SUPERUSER_ID
 	 verdict = False

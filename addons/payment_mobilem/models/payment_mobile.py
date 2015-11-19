@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from passlib.context import CryptContext
 from openerp import models, fields, api
+from openerp.tools.float_utils import float_compare
 import re
 import logging
 _logger = logging.getLogger(__name__)
@@ -29,7 +30,91 @@ pat = "^\s*(\w+)\s*Confirmed[.\s]*You\s*have\s*received\s*Ksh\s*([\d,]+.00)\s*fr
 #	_sql_constraints = {
 #                ('unique_field', 'unique(name)', 'The field name must be unique!')
 #        }
-	
+class MobileMoneyAquirer(models.Model):
+	_inherit = 'payment.acquirer'
+
+	@api.model
+	def _get_providers(self):
+	    providers = super(MobileMoneyAquirer, self)._get_providers()
+	    providers.append(['mobilem', 'Mobile Money'])
+	    return providers
+
+	@api.multi
+	def mobilem_get_form_action_url(self):
+	    return '/payment/mobilem/feedback'
+
+	mobilem_account_id = fields.Many2one('mobile.accounts', 'Mobile Account', select=True, 
+	   help="This is the unique mobile account id that has been configured to be used to receive payment from client using mobile money.This account\
+	 contains service provider specific detaails such as account number, paybill number etc")
+	mobilem_provider_id = fields.Many2one(related='mobilem_account_id.provider_id', string="Mobile Money Provider", 
+	   help="This is the Mobile Money service provider associated with the Mobile Money Account ID selected above.This is to guide you in naming this\
+	 payment aquirer according to the service provider")
+	mobilem_service_type = fields.Char('Service Name', required=True, help="Enter the type of Payment Service name given by your Mobile payment service provider..e.g 'Paybill', 'Buy Goods', 'Send Money', This service Name will appear on your ecommerce website for your clients to see and use it")
+	mobilem_service_number = fields.Char('Service Number', help="This is the unique number given by the Mobile Service Provider for the above service name. e.g 'Paybill Number', 'Till Number', 'MPESA Number'")
+
+class TransactionMobilem(models.Model):
+	_inherit = 'payment.transaction'
+
+	mobilem_msg_id = fields.Many2one('payment.mobile','Mobile Message', readonly=True, 
+		help="This is the Mobile Money payment message that is linked to this Transaction")
+	mobilem_cust_code = fields.Char('Transaction Code', help="Transaction Code entered by customer during payment confirmation")
+	@api.model
+	def _mobilem_form_get_tx_from_data(self,data):
+            reference, amount, currency_name = data.get('reference'), data.get('amount'), data.get('currency_name')
+            tx = self.search([('reference', '=', reference)])
+            if not tx or len(tx) > 1:
+               error_msg = 'received data for Order reference %s' % (pprint.pformat(reference))
+               if not tx:
+                  error_msg += '; no order found'
+               else:
+                  error_msg += '; multiple order found'
+               _logger.error(error_msg)
+               raise ValidationError(error_msg)
+            return tx
+
+
+	def _mobilem_form_get_invalid_parameters(self, cr, uid, tx, data, context=None):
+            invalid_parameters = []
+            if float_compare(float(data.get('amount', '0.0')), tx.amount, 2) != 0:
+               invalid_parameters.append(('amount', data.get('amount'), '%.2f' % tx.amount))
+            if data.get('currency') != tx.currency_id.name:
+               invalid_parameters.append(('currency', data.get('currency'), tx.currency_id.name))
+            return invalid_parameters
+
+	@api.model
+	def _mobilem_form_validate(self, tx, data):
+	    _logger.info('Validating Mobile Money payment for Order %s:' % tx.reference)
+	    cust_tx_code = str.upper(str(data.get('confirm_code')))
+	    account_id = str.upper(str(data.get('confirm_code')))
+	    vals = {'mobilem_cust_code': cust_tx_code}
+	    if cust_tx_code:
+	       mobilem_rec = self.env['payment.mobile'].search(
+			[
+				('code', '=', cust_tx_code ), 
+				('account_id', '=', account_id ), 
+				('processed', '=', False)
+			], 
+				order="timestamp desc")
+	       if mobilem_rec and mobilem_rec.amount:
+		  amount = float(re.sub(',', '', mobilem_rec.amount))
+		  vals['acquirer_reference'] = mobilem_rec.account_id.name
+		  vals['mobilem_msg_id'] = mobilem_rec.id
+		  if amount >= float(data.get('amount')):
+		     vals['state'] = 'done'
+		     vals['state_message'] = 'OK'
+		     mobilem_rec.write({'processed': True})
+		  else:
+		     vals['state_message'] = "Customer paid less than order value"
+		     vals['state'] = 'pending'
+		     mpesa.write({'processed': True})
+	       else: ##message has not arrived or no such message(wrong confirmation code) or message already processed or message is missing some data
+	          vals['state'] = 'pending'
+		  vals['state_message'] = "message has not arrived or no such message(wrong confirmation code)"
+	    else:
+	       vals['state'] = 'error'
+	    return tx.write(vals)
+
+ 
 class RegularExp(models.Model):
 	_name = 'mobile.regex'
 	_description = 'Regular Expression'
@@ -68,15 +153,12 @@ class MobileAccounts(models.Model):
 	_description = 'Mobile Payment Accounts'
 	_order = 'name asc'
 	
-	name = fields.Char('Account ID', required=True, help="This is a UNIQUE name for the mobile payment account. This MUST be exactly the same as the ID\
-	 configured in your SMSsync URL in your phone. It is used by the system to identify and authenticate the SMSsync gateway that is sending in the\
-	 SMS texts...It is similar to username in  normal terms")
-	provider_id = fields.Many2one('mobile.providers', 'Service Provider', required=True, select=True, help="The Mobile Service Provider e.g safaricom,\
+	name = fields.Char('Username', required=True, help="This is a UNIQUE username for this mobile payment account. This MUST be exactly the same as the id/username configured in your SMSsync URL in your phone. It is used by the system to identify and authenticate the SMSsync gateway that is sending in the SMS texts.")
+	provider_id = fields.Many2one(related='regex_id.provider_id', string='Service Provider', readonly=True, select=True, help="The Mobile Service Provider e.g safaricom,\
 	 Airtel")
 	regex_id = fields.Many2one('mobile.regex', 'Regula Expression', required=True, select=True, help="This is the Regular Expression that will be used to\
 		to extract payment data from the transaction SMS. Choose the correct one matching the purpose of this account. failure to use the right\
 		 regular expression can lead to inconsistent or incorret payment data")
-	number = fields.Char('Number', help="This is the number given by the Mobile Service Provider e.g 'Paybill Number' or 'Till Number'")
 	password = fields.Char('Password', size=64, required=True, help="This is the password for operating this account. The same password set\
 	 here MUST be the same as the one set in the SMSsync app as 'secret' or on any other SMS gateway used")
 	secret = fields.Char('Secret', invisible=True, required=True)
@@ -142,6 +224,7 @@ class PaymentMobile(models.Model):
 	account_id = fields.Many2one('mobile.accounts', 'Mobile Account', readonly=True, help="This is the account ID/number used to send this message.\
 	 ID is configured in the SMS gateway URL settings and must match the mobile Accont ID configured in this system ")
 	provider_id = fields.Many2one(related='account_id.provider_id', readonly=True, help="The Mobile payment service provider sending this message")
+	processed = fields.Boolean('Processed?', default=False, readonly=True)
 
 	## msg data fields 
 	code = fields.Char('Transaction Code', readonly=True, help="Transaction code found in the SMS. Also know as confirmation code by other\

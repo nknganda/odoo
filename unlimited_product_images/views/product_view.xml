@@ -6,8 +6,8 @@
             <field name="inherit_id" ref="product.product_template_only_form_view"/>
             <field name="arch" type="xml">
               <xpath expr="//page[@name='notes']" position="after">
-		<page string="Additional Images" name="product_images">
-		    <group string="Settings">
+		<page string="Images and Settings" name="product_images" groups="base.group_sale_manager">
+		    <group string="Image Settings">
 			<group>
 			<field name="zoomType"/>
 			<field name="scrollZoom"/>
@@ -30,7 +30,7 @@
 			</group>
 		    </group>
 		   <field name="image_ids"  mode="kanban" context="{'default_product_id': active_id}">
-			<kanban>
+			<kanban string="Product Images">
 			 <field name="sequence" string="Order of Display"/>
 			 <field name="name"/>
 			 <field name="image_medium" string="Image"/>

@@ -1,0 +1,24 @@
+<openerp>
+    <data>
+        <record id="acquirer_form_mobilem" model="ir.ui.view">
+            <field name="name">acquirer.form.mobilem</field>
+            <field name="model">payment.acquirer</field>
+            <field name="inherit_id" ref="payment.acquirer_form"/>
+            <field name="arch" type="xml">
+		<xpath expr='//group[@name=&quot;acquirer&quot;]' position='after'>
+			<group attrs="{'invisible': [('provider', '!=', 'mobilem')]}">
+				<group>	
+				<field name="mobilem_account_id" attrs="{'required': [('provider', '=', 'mobilem')]}"/>
+				<field name="mobilem_provider_id" attrs="{'required': [('provider', '=', 'mobilem')]}"/>
+				</group>	
+				<group>	
+				<field name="mobilem_service_type" attrs="{'required': [('provider', '=', 'mobilem')]}"/>
+				<field name="mobilem_service_number" attrs="{'required': [('provider', '=', 'mobilem')]}"/>
+				</group>	
+			</group>
+
+		</xpath>
+            </field>
+        </record>
+    </data>
+</openerp>
