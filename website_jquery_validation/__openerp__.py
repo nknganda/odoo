@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Jquery Validation plugin for Ecommerce",
+    'name': "Website -> a plugin to install data validation scripts",
 
     'summary': """
-        A plugin that works together with our "Ecommerce Data Validation module" to validate billing & shipping information entered by user.
+        A plugin that works together with our "e-Commerce -> User Information Validator Module" to validate billing & shipping information entered by user.
         """,
 
     'description': """

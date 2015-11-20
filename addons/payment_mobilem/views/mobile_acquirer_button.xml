@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data noupdate="0">
-<!--<template id="mobilem_assets_frontend" inherit_id="website_sale.assets_frontend" name="Mpesa">
+<!-- Edit assets template to replace website_sale_payment.js with a  modified one to validate transaction number and other details entered by user-->
+<template id="mobilem_assets_frontend" inherit_id="website_sale.assets_frontend" name="Mpesa">
   <xpath expr="//script[contains(@src,'website_sale_payment.js')]" position="replace">
       <script type="text/javascript" src="/payment_mobilem/static/src/js/website_sale_payment.js"></script>
   </xpath>
-</template> -->
+</template>
+<!-- Modify payment tempalte to display image logo for each payment aquirer-->
 <template id="mobilem_aquirer_inherit" inherit_id="website_sale.payment" name="Mobilem inherited payment">
   <xpath expr="//img[contains(@t-att-src,'_icon.png')]" position="replace">
   </xpath>
@@ -21,7 +23,7 @@
     </t>
   </xpath>
 </template>
-
+<!-- The template for mobilem acquirer button-->
         <template id="mobilem_acquirer_button">
             <form t-if="acquirer" t-att-action="tx_url" method="post" target="_self" id="MobilemForm">
 		<input id="csrf_token" type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>

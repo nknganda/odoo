@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Multiple Images per Product - Odoo-9.0",
+    'name': "e-Commerce -> Upload and Zoom Multiple Images Per Product",
 
     'summary': """
-        This Module will make it possible to add unlimited number of images for the website product """,
+        Upload several high quality images for your products and let customers enlarge and zoom them for clarity. Choose from numerous zoom options per product  """,
 
     'description': """
         This Module will make it possible to add unlimited number of images for the website product. With an option to publish/unpublish, zoom in or out, magnify in different styles configurable per product.

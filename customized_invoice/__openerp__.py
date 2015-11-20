@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Professional Invoice Templates - Odoo9.0",
+    'name': "Accounting -> Multiple Professional & Customizable Invoice Templates",
 
     'summary': """
-        Make your Invoice reports look professional by branding them. Choose from three professional Invoice templates and unlimited colors """,
+        Print professional and good looking Invoices reports that you can customize with high quality logos and beautiful unlimited brand colors. Numerous Invoice templates and colors to choose from """,
 
     'description': """
         This module will install a customized client invoice report for accounting module.You will be able to customize the invoice colors,logo and the style/format of invoice to look professional and appealing to your customers. You can also create your own template from scratch or edit one of the existing templates that come with this module 

@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Customer Data Validation for E-commerce Site",
+    'name': "e-Commerce -> User 'Checkout' Information Validator",
 
     'summary': """
-        Validate the data entered by customer during online shopping before submitting to the server
+        Save time and resources by validating the info entered by your online customer before he or she submits them. Quickly validate billing & shipping information as the user is typing them in. No need to submit wrong information empty data then ask the customer to type them in again
         """,
 
     'description': """
