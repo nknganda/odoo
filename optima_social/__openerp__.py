@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Social Media Ids",
+    'name': "Company -> Social Media Ids",
 
     'summary': """
-        Social Media usernames for the company""",
+        Display you company social medial contacts in your reports""",
 
     'description': """
         This modules adds the fields for social media IDs for the company. facebook Id, Twitter Handle and Google-Plus Id. These Ids can then be dispalyed in the reports such as invoice, payslips etc
     """,
-    'images': ['static/description/id1.png'],
+    'images': ['static/description/main.png'],
     'price': 2,
     'currency': 'EUR',
     'author': "Optima ICT Services LTD",
