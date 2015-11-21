@@ -1,16 +1,12 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "e-Commerce -> User 'Checkout' Information Validator",
+    'name': "e-Commerce -> User Checkout Information Validator",
 
     'summary': """
-        Save time and resources by validating the info entered by your online customer before he or she submits them. Quickly validate billing & shipping information as the user is typing them in. No need to submit wrong information empty data then ask the customer to type them in again
+        Save time and resources by validating the info entered by your online customer before he or she submits them for precessing.
         """,
 
     'description': """
-        This Modules ensures that the data entered by your customer is valid before submitting to the ecommerce backend. 
-	Information entered by online customer such as email, phone, billing address, shipping/delivery address are validated before submitting
-	The messages returned to the form when invalid data is entered can be customised easilt to suit your preference. 
-	Also the messages are translated to any language used in the website
     """,
 
     'author': "Optima ICT Services LTD",
