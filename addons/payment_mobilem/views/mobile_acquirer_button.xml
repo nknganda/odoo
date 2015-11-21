@@ -30,18 +30,43 @@
                 <t t-if="return_url">
                     <input id="return_url" type='hidden' name='return_url' t-att-value='return_url'/>
                 </t>
-                <t t-if="acquirer.mobilem_account_id">
-		   <p/>Transaction No.<input type='text' required="" name='confirm_code' id="confirm_code"/><p/>
-                </t>
 		<t t-if="acquirer.mobilem_account_id">
 		  <div>
-		   <div><t t-esc="acquirer.mobilem_service_type"/>&#160;<span class="badge"><t t-esc="acquirer.mobilem_service_number"/></span></div>
-                   <div>Order No.&#160;<span class="badge"><t t-esc="reference"/></span></div>
-                   <div>Amount To Pay:&#160;<span class="badge"><t t-esc="amount"/> <t t-esc="currency.symbol"/></span></div>
-		  </div>
+		   <table class="table table-striped table-condensed">
+		     <tbody>
+		      <tr>
+			<td>
+			  <span><t t-esc="acquirer.mobilem_service_type"/>:</span>
+			</td>
+			<td class="text-right">
+			  <strong><span><t t-esc="acquirer.mobilem_service_number"/></span></strong>
+			</td>
+		      </tr>
+		      <tr>
+			<td>
+			  <span>Amount To Pay:</span>
+			</td>
+			<td class="text-right">
+			  <strong><span><t t-esc="currency.symbol"/></span> <t t-esc="'{:,.2f}'.format(amount)"/></strong>
+			</td>
+		      </tr>      
+		      <tr>
+			<td>
+			  <span>Order Number:</span>
+			</td>
+			<td class="text-right">
+			  <strong><span><t t-esc="reference"/></span></strong>
+			</td>
+		      </tr>      
+		    </tbody>
+		  </table>
+		 </div>
 		</t>
-		<p>Once you have finished making M-PESA payment, please click the button below to confirm your payment. 
-                    You will receive SMS notification within few minutes</p>
+                <t t-if="acquirer.mobilem_account_id">
+		   <div>Transaction Number<input type='text' name='confirm_code' id="confirm_code"/></div>
+                </t>
+		<!--<p>Once you have finished making your payment, please click on the button below to submit the transaction number and confirm your payment. 
+                    You will receive SMS notification within few minutes</p> -->
                 <input id="reference" type='hidden' name='reference' t-att-value='reference'/>
                 <input id="amount" type='hidden' name='amount' t-att-value='amount or "0.0"'/>
                 <input id="currency" type='hidden' name='currency' t-att-value='currency.name'/>

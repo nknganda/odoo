@@ -20,5 +20,19 @@
 		</xpath>
             </field>
         </record>
+        <record id="transaction_form_mobilem" model="ir.ui.view">
+            <field name="name">transaction.form.mobilem</field>
+            <field name="model">payment.transaction</field>
+            <field name="inherit_id" ref="payment.transaction_form"/>
+            <field name="arch" type="xml">
+		<xpath expr="//field[@name='acquirer_id']" position='after'>
+				<field name="mobilem_msg_id" attrs="{'invisible': [('mobilem_msg_id', '=', False)]}"/>
+				<field name="mobilem_cust_code" attrs="{'invisible': [('mobilem_cust_code', '=', False)]}"/>
+                                <field name="mobilem_paid_amount" attrs="{'invisible': [('mobilem_msg_id', '=', False)]}"/>
+                                <field name="mobilem_bal_amount" attrs="{'invisible': [('mobilem_msg_id', '=', False)]}"/>
+
+		</xpath>
+            </field>
+        </record>
     </data>
 </openerp>

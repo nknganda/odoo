@@ -3,6 +3,7 @@ from passlib.context import CryptContext
 from openerp import models, fields, api
 from openerp.tools.float_utils import float_compare
 import re
+import datetime
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -49,7 +50,7 @@ class MobileMoneyAquirer(models.Model):
 	mobilem_provider_id = fields.Many2one(related='mobilem_account_id.provider_id', string="Mobile Money Provider", 
 	   help="This is the Mobile Money service provider associated with the Mobile Money Account ID selected above.This is to guide you in naming this\
 	 payment aquirer according to the service provider")
-	mobilem_service_type = fields.Char('Service Name', required=True, help="Enter the type of Payment Service name given by your Mobile payment service provider..e.g 'Paybill', 'Buy Goods', 'Send Money', This service Name will appear on your ecommerce website for your clients to see and use it")
+	mobilem_service_type = fields.Char('Service Name', help="Enter the type of Payment Service name given by your Mobile payment service provider..e.g 'Paybill', 'Buy Goods', 'Send Money', This service Name will appear on your ecommerce website for your clients to see and use it")
 	mobilem_service_number = fields.Char('Service Number', help="This is the unique number given by the Mobile Service Provider for the above service name. e.g 'Paybill Number', 'Till Number', 'MPESA Number'")
 
 class TransactionMobilem(models.Model):
@@ -57,7 +58,16 @@ class TransactionMobilem(models.Model):
 
 	mobilem_msg_id = fields.Many2one('payment.mobile','Mobile Message', readonly=True, 
 		help="This is the Mobile Money payment message that is linked to this Transaction")
-	mobilem_cust_code = fields.Char('Transaction Code', help="Transaction Code entered by customer during payment confirmation")
+	mobilem_cust_code = fields.Char('Transaction Code', readonly=True, help="Transaction Code entered by customer during payment confirmation")
+	mobilem_paid_amount = fields.Float('Amount Paid', digits=(32,2), readonly=True, help="Amount that the customer paid through Mobile Money")
+	mobilem_bal_amount = fields.Float('Balance to Clear', digits=(32,2), compute='_compute_bal', help="Balance amount that the customer has to clear")
+	
+	@api.one
+	@api.depends('mobilem_paid_amount', 'amount')
+	def _compute_bal(self):
+	    self.mobilem_bal_amount = self.amount - self.mobilem_paid_amount
+	    return
+	
 	@api.model
 	def _mobilem_form_get_tx_from_data(self,data):
             reference, amount, currency_name = data.get('reference'), data.get('amount'), data.get('currency_name')
@@ -84,10 +94,13 @@ class TransactionMobilem(models.Model):
 	@api.model
 	def _mobilem_form_validate(self, tx, data):
 	    _logger.info('Validating Mobile Money payment for Order %s:' % tx.reference)
-	    cust_tx_code = str.upper(str(data.get('confirm_code')))
-	    account_id = str.upper(str(data.get('confirm_code')))
+	    account_id = None
+	    #cust_tx_code = str.upper(str(data.get('confirm_code')))
+	    cust_tx_code = str(data.get('confirm_code'))
+	    if data.get('acquirer'):
+		account_id = self.env['payment.acquirer'].browse([int(data.get('acquirer'))]).mobilem_account_id.id
 	    vals = {'mobilem_cust_code': cust_tx_code}
-	    if cust_tx_code:
+	    if cust_tx_code and account_id:
 	       mobilem_rec = self.env['payment.mobile'].search(
 			[
 				('code', '=', cust_tx_code ), 
@@ -96,22 +109,26 @@ class TransactionMobilem(models.Model):
 			], 
 				order="timestamp desc")
 	       if mobilem_rec and mobilem_rec.amount:
-		  amount = float(re.sub(',', '', mobilem_rec.amount))
+		  paid_amount = float(re.sub(',', '', mobilem_rec.amount))
+		  order_amount = float(data.get('amount'))
 		  vals['acquirer_reference'] = mobilem_rec.account_id.name
 		  vals['mobilem_msg_id'] = mobilem_rec.id
-		  if amount >= float(data.get('amount')):
+		  vals['mobilem_paid_amount'] = paid_amount 
+		  if paid_amount >= order_amount:
 		     vals['state'] = 'done'
-		     vals['state_message'] = 'OK'
-		     mobilem_rec.write({'processed': True})
+		     vals['state_message'] = 'OK - Customer has paid in full'
+		     vals['date_validate'] = datetime.datetime.now()
+		     #mobilem_rec.write({'processed': True})
 		  else:
 		     vals['state_message'] = "Customer paid less than order value"
 		     vals['state'] = 'pending'
-		     mpesa.write({'processed': True})
+		     #mobilem_rec.write({'processed': True})
 	       else: ##message has not arrived or no such message(wrong confirmation code) or message already processed or message is missing some data
 	          vals['state'] = 'pending'
 		  vals['state_message'] = "message has not arrived or no such message(wrong confirmation code)"
 	    else:
 	       vals['state'] = 'error'
+	       vals['state_message'] = "Empty transaction code or empty  mobilem payment account"
 	    return tx.write(vals)
 
  
@@ -211,8 +228,13 @@ class PaymentMobile(models.Model):
 	_name = 'payment.mobile'
 	_description = 'Mobile Payment'
 	_order = 'timestamp desc'
+
+	@api.one
+	@api.depends('write_date')
+	def _compute_name(self):
+	    self.name = str(self.id) if self.id else ''
 	
-	#name = fields.Char('Name')
+	name = fields.Char(compute='_compute_name', string="ID", store=True)
 	message = fields.Text('Message', readonly=True)
 	timestamp = fields.Datetime('Time Sent', readonly=True, help="This is the time the message was sent by the Service provider such as airtel,\
 	 Tigo, Safaricom, MTN etc")
