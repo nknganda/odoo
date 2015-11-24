@@ -6,8 +6,7 @@ from openerp.exceptions import UserError, RedirectWarning, ValidationError
 _logger = logging.getLogger(__name__)
 
 class OandaExchange:
-    """Yahoo Finance Exchange Rate API Methods """
-
+    """OANDA Exchange Rate API Methods """
 
     def _update_xrate(self, base_currency, quotes, api_key):
 	new_rates = {}
@@ -20,16 +19,13 @@ class OandaExchange:
 
 	url = ('https://www.oanda.com/rates/api/v1/rates/{}.json?api_key={}&decimal_places=6&date={}'
 		'&fields=averages{}'.format(base_currency,api_key,today,quote_string))
-        #_logger.info('UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUuurl: %s' % url)
 
         res = json.loads(self.get_rates(url))
-        #_logger.info('RESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS: %s' % res)
-	#test = res.get('code', False)
 	if 'code' in res.keys():
 	   raise ValidationError ('OANDA.COM Error Code {}: {}'.format(res['code'], res['message']))
 	else:
 	   rates = res['quotes']
-           #_logger.info('RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRrrrrates: %s' % rates)
+           #_logger.info('OANDA Exchange Rate API rates: %s' % rates)
 	if rates:
 	   for name, rate in rates.items():
 	       new_rates[name] = rate['bid']

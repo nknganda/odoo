@@ -3,7 +3,7 @@
     'name': "Accounting -> Exchange Rate Automatic Update",
 
     'summary': """
-        Update your exchange rates automatically at intervals of your choice. Choose rates source between YAHOO Finance or Oanda.com""",
+        Update your exchange rates automatically at intervals of your choice. Choose rates source between YAHOO and Oanda.com""",
 
     'description': """
         Long description of module's purpose

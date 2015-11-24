@@ -10,7 +10,7 @@ class res_company(models.Model):
     """inherits base company model and exchange rate fields and methods """
     _inherit = "res.company"
 
-    update_rate = fields.Boolean('Update Currency', help="Turn on/off automatic update of your list of active currencies", default=True)
+    update_rate = fields.Boolean('Automatically Update Rates', help="Turn on/off automatic update of your list of active currencies", default=True)
     rate_source = fields.Selection([('yahoo', 'Yahoo Finance'), ('oanda', 'Oanda.com')], string="Exchange Rate Source")
     quotes = fields.Many2many('res.currency', string="Currency Rates to Update")
     #OANDA specific fields
@@ -20,7 +20,8 @@ class res_company(models.Model):
     def cron_update_rate(self):
 	companies = self.env['res.company'].search([])
 	for company in companies:
-	    company.button_update_rate()
+	    if company.update_rate:
+	       company.button_update_rate()
 	return True
 
     @api.one
@@ -38,23 +39,11 @@ class res_company(models.Model):
         if self.rate_source == 'yahoo':
 	   rates = YAHOO()._update_xrate(self.currency_id.name, quotes)
 	   res = self.save_new_rates(rates)
-	   #if rates:
-	    #  rate_obj = self.env['res.currency.rate']
-	     # for name, rate in rates.items():
-	#	  currency = self.quotes.search([('name', '=', name)], limit=1)
-	#	  if currency:
-	#	     rate_obj.search([('currency_id', '=', currency.id), ('company_id', '=', self.id)]).unlink()
-	#	     rate_obj.create({'rate': rate, 'company_id': self.id, 'currency_id': currency.id})
-	#	  else:
-	#	     raise ValidationError(_('Error in updating exchange rate for currency: %s') % name)
-		
-		
 	   _logger.info('Yahoo Finance Exchange rates: %s' % rates)
 	elif self.rate_source == 'oanda':
 	   rates = OANDA()._update_xrate(self.currency_id.name, quotes, self.api_key)
 	   res = self.save_new_rates(rates)
 	   _logger.info('Oanda.com Exchange rates: %s' % rates)
-	   #raise ValidationError (_('Oanda rates Comming Soon!'))
 	else:
 	   raise ValidationError (_('Select the source for your exchange rates'))
 	return res

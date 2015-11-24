@@ -3,7 +3,6 @@
 class YahooFinance:
     """Yahoo Finance Exchange Rate API Methods """
 
-
     def _update_xrate(self, base_currency, quotes):
 	new_rates = {}
         url = 'http://download.finance.yahoo.com/d/quotes.csv?s=%s=X&f=sl1c1abg'
