@@ -1,0 +1,8 @@
+<openerp>
+    <data>
+	<template inherit_id="website.layout_footer_copyright" id="footer_inherit" name="Footer Copyright Inherited">
+		<xpath expr="//div[@t-ignore='true']" position="replace"> <!-- Removes Poered by Odoo Ecommerce -->
+		</xpath>
+	</template>
+    </data>
+</openerp>
