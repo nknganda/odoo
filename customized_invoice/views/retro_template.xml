@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
   <data>
-    <template id="template_3" name="Retro Invoice">
+    <template id="template_3_document" name="Retro Invoice">
  <!-- Multicompany -->
                 <t t-if="o and 'company_id' in o">
                     <t t-set="company" t-value="o.company_id"></t>
@@ -214,5 +214,14 @@
                  </div>
                </div><!--End of FOOTER-->
     </template>
+
+<template id="template_3_duplicate" inherit_id="template_3_document" primary="True" name="Retro Duplicate">
+    <xpath expr="//h1" position="replace">
+        <h1>
+            <span>Duplicate# </span>
+            <span t-field="o.number"/>
+        </h1>
+    </xpath>
+</template>
 </data>
 </openerp>

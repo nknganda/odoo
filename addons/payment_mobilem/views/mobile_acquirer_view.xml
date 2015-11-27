@@ -14,6 +14,7 @@
 				<group>	
 				<field name="mobilem_service_type" attrs="{'required': [('provider', '=', 'mobilem')]}"/>
 				<field name="mobilem_service_number" attrs="{'required': [('provider', '=', 'mobilem')]}"/>
+				<field name="mobilem_currency_id" attrs="{'required': [('provider', '=', 'mobilem')]}"/>
 				</group>	
 			</group>
 

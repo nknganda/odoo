@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
   <data>
-    <template id="template_4" name="TVA Invoice">
+    <template id="template_4_document" name="TVA Invoice">
  <!-- Multicompany -->
                 <t t-if="o and 'company_id' in o">
                     <t t-set="company" t-value="o.company_id"></t>
@@ -42,9 +42,6 @@
                                         <span style="font-weight:bold;">Website: </span>
                                         <span t-field="company.website"/>
                             </div>
-			    <!--<div style="height:80px; text-align:center;">
-				<span style="font-weight:bold; font-size:64px; color:#f9f9f9;">Stamp</span>
-			    </div> --> 
                        </div>
 			<div class="col-xs-3 pull-right" t-attf-style="border: 1px solid {{o.text_color}}; color:{{o.text_color}};">
 		 		<span style="font-weight:bold;">Date: </span><span t-if="o.date_invoice" t-field="o.date_invoice"></span>
@@ -62,12 +59,6 @@
 			 <div t-if="not o.invoice_logo and not company.logo and not company.invoice_logo" style="width:100%;text-align:right;padding-bottom:8px;">
 			    <span itemprop="image" t-field="company.logo" t-field-options='{"widget": "image", "style": "max-height:120px"; display: inline-block;}'/>
 			 </div>
-                	 <!--<div t-if="company.twitter or company.facebook or company.googleplus" t-attf-style="background-color:{{o.theme_color}}; width:auto; float:right; padding-left:15px; color:{{o.theme_txt_color}}; 
-				   padding-right:15px; padding-top:2px; padding-bottom:2px;" class="pull-right">
-                      		<span t-if="company.twitter" style="padding-left:0px;" class="fa fa-twitter-square fa-lg"/>&#160;<span t-field="company.twitter"/>
-                      		<span t-if="company.facebook" style="padding-left:13px;" class="fa fa-facebook-square fa-lg"/>&#160;<span t-field="company.facebook"/>
-                      		<span t-if="company.googleplus" style="padding-left:13px;" class="fa fa-google-plus-square fa-lg"/>&#160;<span t-field="company.googleplus" />
-                  	 </div> -->
                        </div> 
                 </div> <!--end of Header-->
 		<!-- START OF PAGE -->
@@ -83,7 +74,6 @@
 				<span style="font-weight:bold;">Address: </span><span t-field="o.partner_id.street"/>
 				<span t-if="o.partner_id.street and o.partner_id.street2 ">, </span>
 				<span t-field="o.partner_id.street2"/><span t-if="o.partner_id.zip and o.partner_id.street or o.partner_id.street2 ">, </span>
-				<!--<span t-if="o.partner_id.zip ">zip: </span>-->
 				<span t-field="o.partner_id.zip"/>
 			    </div>
                             <div t-if="o.partner_id.city or o.partner_id.country_id">
@@ -105,7 +95,7 @@
                         </div>
 		  	<div class="col-xs-6" style="padding-left:0px; padding-right:0px; padding-top:5px; padding-bottom:0px; "> 
                      	   <div  t-attf-style="float:left; width:100%; margin-top:0px;padding-top:0px;padding-left:15px;padding-right:15px;color:{{o.text_color}} !important; border:1px solid {{o.text_color}}">
-                             <h4 style="margin-bottom:10px;">
+                             <h4 id="title" style="margin-bottom:10px;">
                                 <span t-if="o.type == 'out_invoice' and (o.state == 'open' or o.state == 'paid')">Invoice No.</span>
                                 <span t-if="o.type == 'out_invoice' and o.state == 'proforma2'">PRO-FORMA</span>
                                 <span t-if="o.type == 'out_invoice' and o.state == 'draft'">Draft Invoice</span>
@@ -120,13 +110,6 @@
 			
 		
                  <div class="col-xs-12" style="padding-left:0px; padding-right:0px; padding-bottom:15px; padding-top:20px;"><!--start of wrapper -->
-		   <!--<div class="col-xs-6 pull-right" style="text-align:right;">
-				
-                           <t t-if="o.date_invoice"><div><strong>Invoice Date:</strong> <span t-field="o.date_invoice"/></div></t>
-                           <t t-if="o.date_due"><div><strong>Due Date:</strong> <span t-field="o.date_due"/></div></t>
-                           <t t-if="o.name"><div><strong>Ref:</strong> <span t-field="o.name"/></div></t>
-                           <t t-if="o.fiscal_position_id"><div><strong>Fiscal Position:</strong> <span t-field="o.fiscal_position_id"/></div></t>
-		   </div> -->
 
                  </div> <!--end of wrapper2-->
                  <div class="col-xs-12 mt8 mb8" t-attf-style="padding-left:0px; padding-right:0px;"> <!--start of DATA-->
@@ -169,20 +152,6 @@
 
                  </div><!--End of DATA-->
 		 <div class="col-xs-12" style="padding-left:0px; padding-right:0px;">
-		 <!--<div class="col-xs-7" t-attf-style="border:1px solid {{o.text_color}}">
-  		    <table class="table table-condensed" t-attf-style="color:{{o.text_color}};">
-			<tbody>
-			  <tr rowspan="3">
-			<td>
-			   <h3>
-			    VAT INVOICE
-			   </h3>
-			</td>
-				
-			 </tr>
-			</tbody>
-		    </table>
-		 </div> -->
                    <div class="col-xs-12 pull-right" style="padding-left:0px; padding-right:0px; page-break-inside: avoid !important;">
                     <table class="table table-condensed" t-attf-style="color:{{o.text_color}};"><tbody>
                         <tr t-attf-style="border-top: 1px solid {{o.text_color}};" >
@@ -215,15 +184,6 @@
 		   <div style="width:100%; height:60px; ">
 		      Adopted this Invoice to the sum of (in words):<span style="color:#f0f0f0">____________________________________________________________________</span>
 		   </div>
-                     <!--<p t-if="o.payment_term_id">
-                        <strong>Payment Terms:</strong> <span t-field="o.payment_term_id"/>
-                     </p> -->
-                     <!--<p t-if="o.fiscal_position_id.note">
-                         <strong>Fiscal Position Remark:</strong> <span t-field="o.fiscal_position_id.note"/>
-                     </p> -->
-                     <!--<p t-if="o.comment">
-                        <strong>Note:</strong> <span t-field="o.comment"/>
-                     </p> -->
 		</div>
                </div><!--End of PAGE-->
                <div class="footer col-xs-12" t-attf-style="color:{{o.text_color}} !important; padding-left:0px; padding-right:0px;">
@@ -250,5 +210,13 @@
                  </div>
                </div><!--End of FOOTER-->
     </template>
+<template id="template_4_duplicate" inherit_id="template_4_document" primary="True" name="TVA Duplicate">
+    <xpath expr="//h4[@id='title']" position="replace">
+        <h4>
+            <span>Duplicate# </span>
+            <span t-field="o.number"/>
+        </h4>
+    </xpath>
+</template>
 </data>
 </openerp>

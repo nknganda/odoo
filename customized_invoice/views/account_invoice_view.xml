@@ -29,6 +29,9 @@
 		 </xpath>
 	    </field>
 	</record>
+<record id="account.report_invoice_document" model="ir.ui.view">
+  <field name="name">Odoo Invoice</field>
+</record>
     </data>
 </openerp>
 

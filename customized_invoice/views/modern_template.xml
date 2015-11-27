@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
   <data>
-    <template id="template_1" name="Modern Invoice">
+    <template id="template_1_document" name="Modern Invoice">
  <!-- Multicompany -->
                 <t t-if="o and 'company_id' in o">
                     <t t-set="company" t-value="o.company_id"></t>
@@ -210,5 +210,14 @@
                  </div>
                </div><!--End of FOOTER-->
     </template>
+<template id="template_1_duplicate" inherit_id="template_1_document" primary="True" name="Modern Duplicate">
+    <xpath expr="//h3" position="replace">
+        <h3>
+            <span>Duplicate# </span>
+            <span t-field="o.number"/>
+        </h3>
+    </xpath>
+</template>
+
 </data>
 </openerp>

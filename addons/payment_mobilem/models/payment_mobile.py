@@ -44,6 +44,9 @@ class MobileMoneyAquirer(models.Model):
 	def mobilem_get_form_action_url(self):
 	    return '/payment/mobilem/feedback'
 
+
+	mobilem_currency_id = fields.Many2one('res.currency', 'Service Currency', select=True, 
+	   help="Currency of the Mobile Money Service")
 	mobilem_account_id = fields.Many2one('mobile.accounts', 'Mobile Account', select=True, 
 	   help="This is the unique mobile account id that has been configured to be used to receive payment from client using mobile money.This account\
 	 contains service provider specific detaails such as account number, paybill number etc")

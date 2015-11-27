@@ -11,7 +11,7 @@ class customized_invoice(models.Model):
 	    if not company.template_invoice:
 		def_tpl = self.env['ir.ui.view'].search([('key', 'like', 'customized_invoice.template_%' ), ('type', '=', 'qweb')], order='id asc', limit=1)
                 company.write({'template_invoice': def_tpl.id})
-	    return company.template_invoice
+	    return company.template_invoice or self.env.ref('account.report_invoice_document')
 	
 	@api.model
 	def _default_odd(self):
@@ -51,8 +51,8 @@ class customized_invoice(models.Model):
 	
  	invoice_logo = fields.Binary("Logo", attachment=True,
              help="This field holds the image used as logo for the invoice, if non is uploaded, the default logo define in the copmany settings will be used")
-	template_id = fields.Many2one('ir.ui.view', 'Invoice Template', default=_default_template,
-			domain="[('type', '=', 'qweb'), ('key', 'like', 'customized_invoice.template_%' )]", required=True)
+	template_id = fields.Many2one('ir.ui.view', 'Invoice Template', default=_default_template,required=True, 
+		domain="[('type', '=', 'qweb'), ('key', 'like', 'customized_invoice.template\_%\_document' )]")
 	odd = fields.Char('Odd parity Color', size=7, required=True, default=_default_odd, help="The background color for Odd lines in the invoice")	
 	even = fields.Char('Even parity Color', size=7, required=True, default=_default_even, help="The background color for Even lines in the invoice" )	
 	theme_color = fields.Char('Theme Color', size=7, required=True, default=_default_theme_color, help="The Main Theme color of the invoice. Normally this\
@@ -65,3 +65,15 @@ class customized_invoice(models.Model):
 			Normally thisshould be one of your official company colors or default HTML text color")	
 	cust_color = fields.Char('Customer Name Color', size=7, required=True, default=_default_name_color, help="The Text color of the Customer Name. \
 			Normally this should be one of your official company colors or default HTML text color")	
+
+	##Override invoice_print method in original invoice class in account module
+	@api.multi
+	def invoice_print(self):
+            """ Print the invoice and mark it as sent, so that we can see more
+               easily the next step of the workflow
+	       This Method overrides the one in the original invoice class
+            """
+            self.ensure_one()
+            self.sent = True
+            return self.env['report'].get_action(self, 'customized_invoice.my_invoice')
+

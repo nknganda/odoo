@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'account', 'website_jquery_validation'],
+    'depends': ['base', 'account', 'website_sale', 'website_jquery_validation'],
 
     # always loaded
     'data': [

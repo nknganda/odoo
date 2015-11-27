@@ -5,11 +5,17 @@ from openerp import models, fields, api
 class default_report_settings(models.Model):
 	_inherit=["res.company"]
 
+        @api.model
+        def _default_template(self):
+            def_tpl = self.env['ir.ui.view'].search([('key', 'like', 'customized_invoice.template\_%\_document' ), ('type', '=', 'qweb')], 
+		order='id asc', limit=1)
+            return def_tpl or self.env.ref('account.report_invoice_document')
+
 
 	invoice_logo = fields.Binary("Logo", attachment=True,
                 help="This field holds the image used as logo for the invoice, if non is uploaded, the company logo will be used")	
-	template_invoice = fields.Many2one('ir.ui.view', 'Invoice Template', 
-			domain="[('type', '=', 'qweb'), ('key', 'like', 'customized_invoice.template_%' )]", required=True)
+	template_invoice = fields.Many2one('ir.ui.view', 'Invoice Template', default=_default_template, 
+			domain="[('type', '=', 'qweb'), ('key', 'like', 'customized_invoice.template\_%\_document' )]", required=True)
 	odd = fields.Char('Odd parity Color', size=7, required=True, default="#F2F2F2", help="The background color for Odd invoice lines in the invoice")	
 	even = fields.Char('Even parity Color', size=7, required=True, default="#FFFFFF", help="The background color for Even invoice lines in the invoice" )	
 	theme_color = fields.Char('Theme Color', size=7, required=True, default="#F07C4D", help="The Main Theme color of the invoice. Normally this\

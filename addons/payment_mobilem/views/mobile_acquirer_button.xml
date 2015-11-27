@@ -47,7 +47,7 @@
 			  <span>Amount To Pay:</span>
 			</td>
 			<td class="text-right">
-			  <strong><span><t t-esc="currency.symbol"/></span> <t t-esc="'{:,.2f}'.format(amount)"/></strong>
+			  <strong><span><t t-esc="acquirer.mobilem_currency_id.symbol"/></span> <t t-esc="'{:,.2f}'.format((amount / currency.rate) * acquirer.mobilem_currency_id.rate)"/></strong>
 			</td>
 		      </tr>      
 		      <tr>
