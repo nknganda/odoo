@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Accounting -> Exchange Rate Automatic Update",
+    'name': "Accounting: Exchange Rate Automatic Update",
 
     'summary': """
         Update your exchange rates automatically at intervals of your choice. Choose rates source between YAHOO and Oanda.com""",
@@ -22,7 +22,7 @@
     'depends': ['base', 'account'],
     'currency': 'EUR',
     'price': 19,
-    'images': ['static/description/main.png'],
+    'images': ['static/description/forex.png'],
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
