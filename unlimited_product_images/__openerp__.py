@@ -3,7 +3,7 @@
     'name': "e-Commerce -> Upload and Zoom Multiple Images Per Product",
 
     'summary': """
-        Upload several high quality images for your products and let customers enlarge and zoom them for clarity. Choose from numerous zoom options per product  """,
+        Upload several high quality images for your products and let customers zoom them for closer and clearer look """,
 
     'description': """
         This Module will make it possible to add unlimited number of images for the website product. With an option to publish/unpublish, zoom in or out, magnify in different styles configurable per product.
