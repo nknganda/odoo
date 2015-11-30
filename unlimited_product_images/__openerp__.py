@@ -8,7 +8,7 @@
     'description': """
         This Module will make it possible to add unlimited number of images for the website product. With an option to publish/unpublish, zoom in or out, magnify in different styles configurable per product.
     """,
-    'images': ['static/description/main1.png'],
+    'images': ['static/description/images.png'],
     'author': "Optima ICT Services LTD",
     'website': "http://optima.co.ke",
     'price': 49,
