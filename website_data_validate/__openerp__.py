@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "e-Commerce -> User Checkout Information Validator",
+    'name': "e-Commerce Checkout Data Verification",
 
     'summary': """
-        Save time and resources by validating the info entered by your online customer before he or she submits them for precessing.
+        Save time and resources by validating the info entered by your online customer before he or she submits them for processing.
         """,
 
     'description': """
@@ -11,7 +11,7 @@
 
     'author': "Optima ICT Services LTD",
     'website': "http://www.optima.co.ke",
-    'images': ['static/description/main4.png'],
+    'images': ['static/description/data.png'],
     'price': 15,
     'currency': 'EUR',
 
