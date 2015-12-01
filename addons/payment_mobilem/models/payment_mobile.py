@@ -47,6 +47,8 @@ class MobileMoneyAquirer(models.Model):
 
 	mobilem_currency_id = fields.Many2one('res.currency', 'Service Currency', select=True, 
 	   help="Currency of the Mobile Money Service")
+	mobilem_journal_id = fields.Many2one('account.journal', 'Accounting Journal', select=True, domain="[('type', 'in', ('bank','cash'))]",
+	   help="This is the journal to record all successful Mobile Money payments in the accounting books")
 	mobilem_account_id = fields.Many2one('mobile.accounts', 'Mobile Account', select=True, 
 	   help="This is the unique mobile account id that has been configured to be used to receive payment from client using mobile money.This account\
 	 contains service provider specific detaails such as account number, paybill number etc")
@@ -96,18 +98,18 @@ class TransactionMobilem(models.Model):
 
 	@api.model
 	def _mobilem_form_validate(self, tx, data):
-	    _logger.info('Validating Mobile Money payment for Order %s:' % tx.reference)
-	    account_id = None
+	    _logger.info('Validating Mobile Money payment for Order: %s' % tx.reference)
+	    acquirer_id = None
 	    #cust_tx_code = str.upper(str(data.get('confirm_code')))
 	    cust_tx_code = str(data.get('confirm_code'))
 	    if data.get('acquirer'):
-		account_id = self.env['payment.acquirer'].browse([int(data.get('acquirer'))]).mobilem_account_id.id
+		acquirer_id = self.env['payment.acquirer'].browse([int(data.get('acquirer'))])
 	    vals = {'mobilem_cust_code': cust_tx_code}
-	    if cust_tx_code and account_id:
+	    if cust_tx_code and acquirer_id:
 	       mobilem_rec = self.env['payment.mobile'].search(
 			[
 				('code', '=', cust_tx_code ), 
-				('account_id', '=', account_id ), 
+				('account_id', '=', acquirer_id.mobilem_account_id.id ), 
 				('processed', '=', False)
 			], 
 				order="timestamp desc")
@@ -118,6 +120,15 @@ class TransactionMobilem(models.Model):
 		  vals['mobilem_msg_id'] = mobilem_rec.id
 		  vals['mobilem_paid_amount'] = paid_amount 
 		  if paid_amount >= order_amount:
+            	     _logger.info('mobilem_create_payment *****************************************************: %s' % tx.partner_id.company_id.mobilem_create_payment)
+		     if tx.partner_id.company_id.mobilem_create_invoice:
+			res = self._create_invoice(tx)
+			if res is None:
+			   _logger.error("Failed to create Invoice for order: %s" % data.get('reference') )
+		     if tx.partner_id.company_id.mobilem_create_payment:
+			res = self._create_payment(paid_amount, data, tx, acquirer_id)
+			if res is None:
+              		   _logger.error("Failed to create Payment entry for order: %s" % data.get('reference') )
 		     vals['state'] = 'done'
 		     vals['state_message'] = 'OK - Customer has paid in full'
 		     vals['date_validate'] = datetime.datetime.now()
@@ -128,12 +139,55 @@ class TransactionMobilem(models.Model):
 		     #mobilem_rec.write({'processed': True})
 	       else: ##message has not arrived or no such message(wrong confirmation code) or message already processed or message is missing some data
 	          vals['state'] = 'pending'
-		  vals['state_message'] = "message has not arrived or no such message(wrong confirmation code)"
+		  vals['state_message'] = "message has not arrived or no such message (wrong confirmation code)"
 	    else:
 	       vals['state'] = 'error'
-	       vals['state_message'] = "Empty transaction code or empty  mobilem payment account"
+	       vals['state_message'] = "Empty transaction code or empty mobilem payment account"
 	    return tx.write(vals)
 
+	@api.model
+	def _create_payment(self, paid_amount, data, tx, acquirer_id):
+            _logger.info('GOING TO CREATE PAYMENTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTtt ')
+	    vals = {}
+	    res = None
+	    if paid_amount and tx:
+	       vals = {
+		 'communication': data.get('reference'),
+		 'company_id': tx.partner_id.company_id.id,
+		 'currency_id': acquirer_id.mobilem_currency_id.id,
+		 'partner_id': tx.partner_id.id,
+		 'payment_method_id': self.env['account.payment.method'].search([('payment_type', '=', 'inbound'), ('code', '=', 'manual' )], limit=1).id,
+		 'payment_date': datetime.datetime.now(),
+		 'payment_difference_handling': 'open',
+		 'journal_id': acquirer_id.mobilem_journal_id.id,
+		 'partner_type': 'customer',
+		 'amount': paid_amount,
+		 'payment_type': 'inbound',
+		 'payment_type': 'inbound',
+		}
+               _logger.info('VAL LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL: %s' % vals)
+	       res = self.env['account.payment'].create(vals)
+	       res.post()
+               _logger.info('RESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSs: %s' % res)
+	    return res
+	
+	@api.model
+	def _create_invoice(self,tx):
+	   invoice = None
+	   if tx and tx.sale_order_id:
+		#context = {"active_model": 'sale.order', "active_ids": [tx.sale_order_id.id], "active_id": tx.sale_order_id.id}
+		#adv_pay = self.env['sale.advance.payment.inv'].create({
+		#	'advance_payment_method': 'all',
+		#	'amount': 0.00,
+		#	'count': 1,
+		#})
+	  	#invoice = adv_pay.with_context(context).create_invoices()
+	  	invoice = tx.sale_order_id.action_invoice_create(grouped=True, final=True)
+               	_logger.info('INVOICE EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEe: %s' % invoice)
+	   return invoice
+		#assert order.invoice_ids, ("No invoice created for sale order %" tx.sale_order_id.name)
+		#for inv in order.invoice_ids:
+		#	inv.with_context(context).invoice_validate()
  
 class RegularExp(models.Model):
 	_name = 'mobile.regex'

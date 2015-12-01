@@ -4,14 +4,18 @@
             <field name="model">account.config.settings</field>
             <field name="inherit_id" ref="account.view_account_config_settings"/>
             <field name="arch" type="xml">
-              <xpath expr="//div[@name='payment_acquirer']" position="inside">
+              <xpath expr="//div[@name='payment_acquirer']" position="after">
                     <div>
-                        <field name="module_payment_mpesa" class="oe_inline"/>
-                        <label for="module_payment_mpesa"/>
-                    </div>
-                    <div>
-                        <field name="module_payment_airtel" class="oe_inline"/>
-                        <label for="module_payment_airtel"/>
+                        <field name="module_payment_mobilem" class="oe_inline"/>
+                        <label for="module_payment_mobilem"/>
+                        <div style="padding-left: 50px !important;" attrs="{'invisible': [('module_payment_mobilem', '=', False)]}">
+                            <field name="mobilem_create_payment"/>
+			    <label for="mobilem_create_payment"/>
+                       	</div>
+                        <div style="padding-left: 50px !important;" attrs="{'invisible': [('module_payment_mobilem', '=', False)]}">
+                            <field name="mobilem_create_invoice"/>
+			    <label for="mobilem_create_invoice"/>
+                       </div>
                     </div>
 	      </xpath>
 	    </field>

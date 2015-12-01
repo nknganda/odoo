@@ -10,6 +10,7 @@
 				<group>	
 				<field name="mobilem_account_id" attrs="{'required': [('provider', '=', 'mobilem')]}"/>
 				<field name="mobilem_provider_id" attrs="{'required': [('provider', '=', 'mobilem')]}"/>
+				<field name="mobilem_journal_id" attrs="{'required': [('provider', '=', 'mobilem')]}"/>
 				</group>	
 				<group>	
 				<field name="mobilem_service_type" attrs="{'required': [('provider', '=', 'mobilem')]}"/>
