@@ -94,7 +94,7 @@
              <xpath expr="//table//tr[contains(@t-att-class, 'invoice_index')]" position="replace">
                     <tr t-att-class="'hidden to_hide' if invoice.state!='open' and invoice_index &gt; 4 else ''">
                         <td>
-                            <a t-att-href="'/report/pdf/account.report_invoice/'+str(invoice.id)"> <t  t-esc="{}.format(invoice.number)"/> </a>
+                            <a t-att-href="'/report/pdf/account.report_invoice/'+str(invoice.id)"> <t  t-esc="invoice.number"/> </a>
                         </td>
                         <td > <span style="padding-left: 8px;" t-field="invoice.date_invoice"/> </td>
                         <td><span t-field="invoice.date_due"/></td>

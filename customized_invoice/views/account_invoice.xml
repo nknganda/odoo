@@ -21,5 +21,10 @@
 		<a t-att-href="'/report/pdf/customized_invoice.my_invoice/'+str(invoice.id)"><t t-esc="invoice.number"/></a>
 	</xpath>
 </template>
+<template id="web_portal_orders_followup" inherit_id="website_portal_sale.orders_followup" name="Sales Order Inherited">
+	<xpath expr="//t[@t-set= 'report_url']" position="replace">
+		<t t-set="report_url" t-value="'/report/pdf/customized_invoice.my_invoice/%s' % i.id"/>
+	</xpath>
+</template>
 </data>
 </openerp>

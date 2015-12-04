@@ -182,13 +182,40 @@ class TransactionMobilem(models.Model):
 		#	'count': 1,
 		#})
 	  	#invoice = adv_pay.with_context(context).create_invoices()
-	  	invoice = tx.sale_order_id.action_invoice_create(grouped=True, final=True)
+		for line in tx.sale_order_id.order_line:
+               	    _logger.info('STATE OF SALE ORDER QTY TO INVOICE IS FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF: %s' % line.qty_to_invoice )
+               	    _logger.info('STATE OF SALE ORDER QTY INVOICED UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUFF: %s' % line.qty_invoiced )
+               	    _logger.info('STATE OF SALE ORDER UOM QTY YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY: %s' % line.product_uom_qty )
+               	    _logger.info('STATE OF SALE ORDER QTY DELIVERED JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJjj: %s' % line.qty_delivered )
+               	    _logger.info('STATE OF SALE ORDER :__________________________________________________________: %s' % line.order_id.state )
+		    
+	  	invoice = tx.sale_order_id.action_invoice_create(final=True)
                	_logger.info('INVOICE EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEe: %s' % invoice)
 	   return invoice
 		#assert order.invoice_ids, ("No invoice created for sale order %" tx.sale_order_id.name)
 		#for inv in order.invoice_ids:
 		#	inv.with_context(context).invoice_validate()
- 
+	@api.model
+	def form_feedback(self, data, acquirer_name): 
+		""" Override to create invoice  if mobilem_create_invoice is set and transaction is in 'done' state. """
+	        tx = None
+	        res = super(TransactionMobilem, self).form_feedback(data, acquirer_name)
+	        tx_find_method_name = '_%s_form_get_tx_from_data' % acquirer_name
+	        if hasattr(self, tx_find_method_name):
+        	    tx = getattr(self, tx_find_method_name)(data)
+		if tx and tx.state == 'done' and tx.sale_order_id.state in ['sale', 'done'] and tx.partner_id.company_id.mobilem_create_invoice:
+			invoice_id = tx.sale_order_id.action_invoice_create(final=True)
+               		_logger.info('INVOICE ID  EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEe: %s' % invoice_id)
+			if invoice_id:
+			    invoice = self.env['account.invoice'].browse(invoice_id)
+               		    _logger.info('INVOICE itself ***********************************************************88: %s' % invoice)
+			    if invoice and invoice.state == 'draft':
+				invoice.signal_workflow('invoice_open')
+
+		return res
+
+		
+
 class RegularExp(models.Model):
 	_name = 'mobile.regex'
 	_description = 'Regular Expression'
