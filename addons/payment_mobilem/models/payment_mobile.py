@@ -5,6 +5,7 @@ from openerp.tools.float_utils import float_compare
 import re
 import datetime
 import logging
+import json
 _logger = logging.getLogger(__name__)
 
 default_crypt_context = CryptContext(
@@ -21,16 +22,6 @@ default_crypt_context = CryptContext(
 mes = "DZ22ZD655 Confirmed. You have received Ksh5,500.00 from ALEX NDUNG'U 254723784491 on 31/7/13 at 3:08 PM New M-PESA balance is Ksh5,844.00.Save & get a loan on Mshwari"
 pat = "^\s*(\w+)\s*Confirmed[.\s]*You\s*have\s*received\s*Ksh\s*([\d,]+.00)\s*from\s*([\w\W]+)\s+(\d+)\s*on\s*([\d/]+)\s*at\s*([\d:\sAP]+M)\s*New\s*m-pesa\s*balance\s*is\s*Ksh\s*([\d,]+.00)[\s\W\w]*(?i)"
 
-#class mobile_fields(models.Model):
-#	_name = 'mobile.fields'
-#	_description = 'Mobile Message Field'
-#	
-#	name = fields.Char('Name of Field', required=True)
-#	db_name = fields.Char('Real name in DB', required=True)
-#	
-#	_sql_constraints = {
-#                ('unique_field', 'unique(name)', 'The field name must be unique!')
-#        }
 class MobileMoneyAquirer(models.Model):
 	_inherit = 'payment.acquirer'
 
@@ -105,54 +96,48 @@ class TransactionMobilem(models.Model):
 	    if data.get('acquirer'):
 		acquirer_id = self.env['payment.acquirer'].browse([int(data.get('acquirer'))])
 	    vals = {'mobilem_cust_code': cust_tx_code}
+
+	    # check of all confirmation code and payment aquirer is present else txn error
 	    if cust_tx_code and acquirer_id:
+	       #look for matching  unprocessed SMS message  
 	       mobilem_rec = self.env['payment.mobile'].search(
-			[
-				('code', '=', cust_tx_code ), 
+			[	('code', '=', cust_tx_code ), 
 				('account_id', '=', acquirer_id.mobilem_account_id.id ), 
-				('processed', '=', False)
-			], 
-				order="timestamp desc")
+				('processed', '=', False)], 
+				order="timestamp desc", limit=1)
+
+	       # check if  matching message was found  and message has amount else txn goes to pending
 	       if mobilem_rec and mobilem_rec.amount:
+	       	  #mobilem_rec.write({'processed': True})
 		  paid_amount = float(re.sub(',', '', mobilem_rec.amount))
-		  order_amount = float(data.get('amount'))
+
+		  # Create a Payment entry for successful pay if set in config
+            	  _logger.info('mobilem_create_payment ********************************************: %s' % tx.partner_id.company_id.mobilem_create_payment)
+		  if tx.partner_id.company_id.mobilem_create_payment:
+		     res = self._create_payment(paid_amount, data, tx, acquirer_id)
+		     if res is None:
+              	       _logger.error("Failed to create Payment entry for order: %s" % tx.sale_order_id.name )
 		  vals['acquirer_reference'] = mobilem_rec.account_id.name
 		  vals['mobilem_msg_id'] = mobilem_rec.id
-		  vals['mobilem_paid_amount'] = paid_amount 
-		  if paid_amount >= order_amount:
-            	     _logger.info('mobilem_create_payment *****************************************************: %s' % tx.partner_id.company_id.mobilem_create_payment)
-		     if tx.partner_id.company_id.mobilem_create_invoice:
-			res = self._create_invoice(tx)
-			if res is None:
-			   _logger.error("Failed to create Invoice for order: %s" % data.get('reference') )
-		     if tx.partner_id.company_id.mobilem_create_payment:
-			res = self._create_payment(paid_amount, data, tx, acquirer_id)
-			if res is None:
-              		   _logger.error("Failed to create Payment entry for order: %s" % data.get('reference') )
-		     vals['state'] = 'done'
-		     vals['state_message'] = 'OK - Customer has paid in full'
-		     vals['date_validate'] = datetime.datetime.now()
-		     #mobilem_rec.write({'processed': True})
-		  else:
-		     vals['state_message'] = "Customer paid less than order value"
-		     vals['state'] = 'pending'
-		     #mobilem_rec.write({'processed': True})
+		  vals['mobilem_paid_amount'] = ((paid_amount / acquirer_id.mobilem_currency_id.rate) * tx.currency_id.rate)
+		  vals['state'] = 'done'
+		  vals['state_message'] = 'Customer has paid'
+		  vals['date_validate'] = datetime.datetime.now()
 	       else: ##message has not arrived or no such message(wrong confirmation code) or message already processed or message is missing some data
 	          vals['state'] = 'pending'
-		  vals['state_message'] = "message has not arrived or no such message (wrong confirmation code)"
+		  vals['state_message'] = "No matching message for confirmation code entered. Needs investigation"
 	    else:
 	       vals['state'] = 'error'
-	       vals['state_message'] = "Empty transaction code or empty mobilem payment account"
+	       vals['state_message'] = "No transaction code or No mobilem payment acquirer data"
 	    return tx.write(vals)
 
 	@api.model
 	def _create_payment(self, paid_amount, data, tx, acquirer_id):
-            _logger.info('GOING TO CREATE PAYMENTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTtt ')
 	    vals = {}
 	    res = None
 	    if paid_amount and tx:
 	       vals = {
-		 'communication': data.get('reference'),
+		 'communication': tx.sale_order_id.name,
 		 'company_id': tx.partner_id.company_id.id,
 		 'currency_id': acquirer_id.mobilem_currency_id.id,
 		 'partner_id': tx.partner_id.id,
@@ -163,55 +148,56 @@ class TransactionMobilem(models.Model):
 		 'partner_type': 'customer',
 		 'amount': paid_amount,
 		 'payment_type': 'inbound',
-		 'payment_type': 'inbound',
 		}
-               _logger.info('VAL LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL: %s' % vals)
 	       res = self.env['account.payment'].create(vals)
 	       res.post()
-               _logger.info('RESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSs: %s' % res)
 	    return res
 	
-	@api.model
-	def _create_invoice(self,tx):
-	   invoice = None
-	   if tx and tx.sale_order_id:
-		#context = {"active_model": 'sale.order', "active_ids": [tx.sale_order_id.id], "active_id": tx.sale_order_id.id}
-		#adv_pay = self.env['sale.advance.payment.inv'].create({
-		#	'advance_payment_method': 'all',
-		#	'amount': 0.00,
-		#	'count': 1,
-		#})
-	  	#invoice = adv_pay.with_context(context).create_invoices()
-		for line in tx.sale_order_id.order_line:
-               	    _logger.info('STATE OF SALE ORDER QTY TO INVOICE IS FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF: %s' % line.qty_to_invoice )
-               	    _logger.info('STATE OF SALE ORDER QTY INVOICED UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUFF: %s' % line.qty_invoiced )
-               	    _logger.info('STATE OF SALE ORDER UOM QTY YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY: %s' % line.product_uom_qty )
-               	    _logger.info('STATE OF SALE ORDER QTY DELIVERED JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJjj: %s' % line.qty_delivered )
-               	    _logger.info('STATE OF SALE ORDER :__________________________________________________________: %s' % line.order_id.state )
-		    
-	  	invoice = tx.sale_order_id.action_invoice_create(final=True)
-               	_logger.info('INVOICE EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEe: %s' % invoice)
-	   return invoice
-		#assert order.invoice_ids, ("No invoice created for sale order %" tx.sale_order_id.name)
-		#for inv in order.invoice_ids:
-		#	inv.with_context(context).invoice_validate()
 	@api.model
 	def form_feedback(self, data, acquirer_name): 
 		""" Override to create invoice  if mobilem_create_invoice is set and transaction is in 'done' state. """
 	        tx = None
 	        res = super(TransactionMobilem, self).form_feedback(data, acquirer_name)
 	        tx_find_method_name = '_%s_form_get_tx_from_data' % acquirer_name
+		
+		# get txn before proceeding
 	        if hasattr(self, tx_find_method_name):
         	    tx = getattr(self, tx_find_method_name)(data)
+               	_logger.info('TRABSACTION ITSELF TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTt: %s' % tx)
+		# if create invoice is set in config and txn has been validated then create invoice from txn and sale order
 		if tx and tx.state == 'done' and tx.sale_order_id.state in ['sale', 'done'] and tx.partner_id.company_id.mobilem_create_invoice:
 			invoice_id = tx.sale_order_id.action_invoice_create(final=True)
                		_logger.info('INVOICE ID  EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEe: %s' % invoice_id)
+			#check if invoice was created
 			if invoice_id:
 			    invoice = self.env['account.invoice'].browse(invoice_id)
                		    _logger.info('INVOICE itself ***********************************************************88: %s' % invoice)
+			    #confirm that invoice is not already validated by another user or process
 			    if invoice and invoice.state == 'draft':
-				invoice.signal_workflow('invoice_open')
-
+				invoice.signal_workflow('invoice_open') #validate invoice
+				
+				# reconcile invoice with payment if set in config
+				if tx.partner_id.company_id.mobilem_register_payment:
+				   #first check if there is outstanding payment for this invoice
+				   if invoice.has_outstanding and invoice.outstanding_credits_debits_widget:
+					payments = json.loads(invoice.outstanding_credits_debits_widget)
+               		    		_logger.info('JSON itself WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW: %s' % payments)
+					#look for payment that match this invoice origin(i.e sale order name)
+					for payment in payments['content']:
+						# we register/reconcile only those payments linked to the sale order
+						if payment['journal_name'] == tx.sale_order_id.name and payments['title'] == 'Outstanding credits':
+						   #check if invoice is still in 'open' state before registering payment
+						   if invoice.state == 'open':
+						      _logger.info('Reconciling payment for %s with invoice' % payment['journal_name'])
+						      pay_line = self.env['account.move.line'].browse([payment['id']])
+  		   				      invoice.register_payment(pay_line)
+				   else:
+					_logger.info('No outstanding payment to assign this invoice %s' % invoice.number)		
+				else:
+					_logger.info('Payment registration/reconciliation not enabled')		
+			    else:
+				_logger.info('Invoice missing or not in draft state in order to be validated')		
+			
 		return res
 
 		

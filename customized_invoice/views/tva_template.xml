@@ -159,6 +159,12 @@
 				<h3 style="margin-bottom:20px;" > 
                              	   VAT INVOICE
                                </h3>
+                              <strong>
+                                <span t-if="o.state == 'paid'" class="label label-info orders_label_text_align"><i class="fa fa-fw fa-check"/> Paid</span>
+                                <span t-if="o.state != 'paid'" class="label label-info orders_label_text_align">
+					<i class="fa fa-fw fa-clock-o"/> Waiting Payment</span>
+                              </strong>
+
 			    </td>
                             <td t-attf-style="border-top: 1px solid {{o.text_color}} !important;"><strong>Total Excluding Taxes</strong></td>
                             <td class="text-right" t-attf-style="border-top: 1px solid {{o.text_color}} !important;">

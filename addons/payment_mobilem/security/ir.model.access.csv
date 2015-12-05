@@ -1,2 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_payment_mobile_payment_mobile,payment_mobile.payment_mobile,model_payment_mobile_payment_mobile,,1,0,0,0
+access_account_tax_group_public_user,account.tax.group public user,account.model_account_tax_group,,1,0,0,0

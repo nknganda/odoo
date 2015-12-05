@@ -24,7 +24,7 @@
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'views/mobile_money_config.xml',
         'views/payment_mobile_views.xml',
         'views/mobile_accounts_view.xml',
