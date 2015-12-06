@@ -155,7 +155,7 @@
                    <div class="col-xs-12 pull-right" style="padding-left:0px; padding-right:0px; page-break-inside: avoid !important;">
                     <table class="table table-condensed" t-attf-style="color:{{o.text_color}};"><tbody>
                         <tr t-attf-style="border-top: 1px solid {{o.text_color}};" >
-			    <td rowspan="3" t-attf-style="border:1px solid {{o.text_color}}; width:40%; text-align:center;">
+			    <td rowspan="4" t-attf-style="border:1px solid {{o.text_color}}; width:40%; text-align:center;">
 				<h3 style="margin-bottom:20px;" > 
                              	   VAT INVOICE
                                </h3>
@@ -182,7 +182,15 @@
                             <td class="text-right" t-attf-style="border-top: 1px solid {{o.text_color}} !important;">
                                  <strong><span  style="font-weight:bold; text-decoration:underline;" t-field="o.amount_total"/></strong>
                             </td>
-                        </tr></tbody>
+                        </tr>
+                        <tr t-attf-style="border-bottom: 1px solid {{o.text_color}};">
+                            <td t-attf-style="border-top: 1px solid {{o.text_color}} !important;"><strong>Amount Due</strong></td>
+                            <td class="text-right" t-attf-style="border-top: 1px solid {{o.text_color}} !important;">
+                                 <strong><span  style="font-weight:bold;" t-field="o.residual"/></strong>
+                            </td>
+                        </tr>
+
+			</tbody>
                     </table>
                    </div>
 		</div>

@@ -167,9 +167,15 @@
                             </td>
                         </tr>
                         <tr t-attf-style="border-bottom: 1px solid {{o.text_color}};">
-                            <td t-attf-style="border-top: 1px solid {{o.text_color}} !important;"><strong>Total</strong></td>
+                            <td t-attf-style="border-top: 1px solid {{o.text_color}} !important;"><strong>Invoice Total</strong></td>
                             <td class="text-right" t-attf-style="border-top: 1px solid {{o.text_color}} !important;">
                                  <strong><span  style="font-weight:bold; text-decoration:underline;" t-field="o.amount_total"/></strong>
+                            </td>
+                        </tr>
+                        <tr t-attf-style="border-bottom: 1px solid {{o.text_color}};">
+                            <td t-attf-style="border-top: 1px solid {{o.text_color}} !important;"><strong>Amount Due</strong></td>
+                            <td class="text-right" t-attf-style="border-top: 1px solid {{o.text_color}} !important;">
+                                 <strong><span  style="font-weight:bold;" t-field="o.residual"/></strong>
                             </td>
                         </tr>
                         <tr>

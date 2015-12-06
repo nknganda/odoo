@@ -69,7 +69,7 @@
                     You will receive SMS notification within few minutes</p> -->
                 <input id="reference" type='hidden' name='reference' t-att-value='reference'/>
                 <input id="amount" type='hidden' name='amount' t-att-value='amount or "0.0"'/>
-                <input id="currency" type='hidden' name='currency' t-att-value='currency.name'/>
+                <input id="currency" type='hidden' name='currency' t-att-value='currency.id'/>
                 <input id="acquirer" type='hidden' name='acquirer' t-att-value='acquirer.id'/>
                 <!-- submit -->
                 <p/><button id="mobilem_submit" name="mobilem_submit" type="submit" width="100px"

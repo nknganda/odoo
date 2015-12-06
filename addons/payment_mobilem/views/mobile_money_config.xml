@@ -16,6 +16,10 @@
                             <field name="mobilem_create_invoice"/>
 			    <label for="mobilem_create_invoice"/>
                        </div>
+                        <div style="padding-left: 100px !important;" attrs="{'invisible': ['|',('module_payment_mobilem', '=', False),('mobilem_create_invoice', '=', False)]}">
+                            <field name="mobilem_send_invoice"/>
+			    <label for="mobilem_send_invoice"/>
+                       </div>
                         <div style="padding-left: 50px !important;" attrs="{'invisible': [('module_payment_mobilem', '=', False)]}">
                             <field name="mobilem_register_payment"/>
 			    <label for="mobilem_register_payment"/>
