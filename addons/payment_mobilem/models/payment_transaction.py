@@ -155,7 +155,7 @@ class TransactionMobilem(models.Model):
 	    res = None
 	    if paid_amount and tx:
 	       vals = {
-		 'communication': tx.sale_order_id.name,
+		 'communication': tx.reference,
 		 'company_id': tx.partner_id.company_id.id,
 		 'currency_id': tx.acquirer_id.mobilem_currency_id.id,
 		 'partner_id': tx.partner_id.id,
@@ -178,19 +178,35 @@ class TransactionMobilem(models.Model):
 	        res = super(TransactionMobilem, self).form_feedback(data, acquirer_name)
 	        tx_find_method_name = '_%s_form_get_tx_from_data' % acquirer_name
 		
-		# get txn before proceeding to create invoice (if set in config)
+		# get txn before proceeding
 	        if hasattr(self, tx_find_method_name):
         	    tx = getattr(self, tx_find_method_name)(data)
                	    #_logger.info('TRABSACTION ITSELF TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTt: %s' % tx)
+		if tx  and tx.partner_id.company_id.mobilem_create_invoice and data.get('return_url') == '/shop/payment/validate':
+		    # payment made from from online shop
+               	    _logger.info('{} is making payment from online shop'.format(tx.partner_id.name))
 		    self.create_invoice(tx)
+		elif tx and tx.partner_id.company_id.mobilem_register_payment and data.get('return_url') == '/website_payment/confirm':
+		    #payment made from customer web portal
+               	    _logger.info('{} is making payment from website portal'.format(tx.partner_id.name))
+		    number = re.sub('-\d+$', '', data.get('reference'))#TODO  improvement needed, May not work witn invoices with '-' in their numbers
+		    invoice = self.env['account.invoice'].search([('number', '=', number), ('state', '=', 'open'), 
+				('partner_id', '=', tx.partner_id.id)], limit=1)
+		    if invoice:
+		       self.register_payment(invoice, tx)
+		    else:
+			_logger.info('Mobilem did not find invoice while reconciling payment from: %s' % tx.partner_id.name)
+		    
+		       
+		    
 		return res
 	
 	@api.model
 	def create_invoice(self, tx):
 		""" Method called to create invoice from txn and sale order if set in config"""
 
-		# if create invoice is set in config and txn has been validated then create invoice from txn and sale order
-		if tx and tx.state == 'done' and tx.sale_order_id.state in ['sale', 'done'] and tx.partner_id.company_id.mobilem_create_invoice:
+		# if txn has been validated then create invoice from txn and sale order
+		if tx and tx.state == 'done' and tx.sale_order_id.state in ['sale', 'done']:
 			invoice_id = tx.sale_order_id.action_invoice_create(final=True)
                		#_logger.info('INVOICE ID  EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEe: %s' % invoice_id)
 			#check if invoice was created
@@ -215,33 +231,34 @@ class TransactionMobilem(models.Model):
 
 	@api.model
 	def register_payment(self, invoice, tx):
-	    """ Method called to register/reconcile a payment if exist with an unpaid invoice for a given partner"""
+	    """ Method called to register/reconcile a payment with an unpaid invoice for a given partner"""
 	    #first, check if invoice is still open and there is outstanding payment for this invoice
 	    if invoice.state == 'open' and invoice.has_outstanding and invoice.outstanding_credits_debits_widget:
                payments = json.loads(invoice.outstanding_credits_debits_widget)
-               #look for payment that match this invoice origin(i.e sale order name)
+               #look for payment that match this invoice origin(i.e using transaction reference number)
                for payment in payments['content']:
                    # we register/reconcile only those payments linked to the sale order
-                   if payment['journal_name'] == tx.sale_order_id.name and payments['title'] == 'Outstanding credits':
-                      _logger.info('Reconciling payment for Order:{} with Invoice: {}'.format(payment['journal_name'], invoice.number))
+                   if payment['journal_name'] == tx.reference and payments['title'] == 'Outstanding credits':
+                      _logger.info('Reconciling payment ref:{} with invoice no. {}'.format(payment['journal_name'], invoice.number))
                       pay_line = self.env['account.move.line'].browse([payment['id']])
                       invoice.register_payment(pay_line)
 		      # now check of we need to send invoice to customer
 		      if tx.partner_id.company_id.mobilem_send_invoice:
-			 res = invoice.action_invoice_sent()
-               		 _logger.info('Result of action_invoice_sent ************************************************: %s' % res)
-			 context = res['context']
-			 context.update(self.env.context)
-			 mail = self.env['mail.compose.message'].with_context(context).create(res)
-               		 _logger.info('mail TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT: %s' % mail)
-			 #self.env['mail.compose.message'].with_context(context).send_mail(auto_commit=True)
-			 mail.with_context(context).send_mail_action()
+			 self.send_invoice(invoice) 
             else:
                 _logger.info('No outstanding payment to assign this invoice %s' % invoice.number)
 
 	    	    
 
-
-
-
+	@api.model
+	def send_invoice(self, invoice):
+	    """ Method to send invoice via mail if activated in the configs"""
+            email_act = invoice.action_invoice_sent()
+            if email_act and email_act.get('context'):
+		admin_email = self.env.ref('base.user_root').partner_id.email
+                email_ctx = email_act['context']
+                email_ctx.update(default_email_from = admin_email)
+                invoice.with_context(email_ctx).message_post_with_template(email_ctx.get('default_template_id'))
+               	_logger.info('INVOICE IS BEING SENT VIA MAIL NOW iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii: %s' % email_ctx)
+            return True
 

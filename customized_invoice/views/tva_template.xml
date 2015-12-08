@@ -162,7 +162,7 @@
                               <strong>
                                 <span t-if="o.state == 'paid'" class="label label-info orders_label_text_align"><i class="fa fa-fw fa-check"/> Paid</span>
                                 <span t-if="o.state != 'paid'" class="label label-info orders_label_text_align">
-					<i class="fa fa-fw fa-clock-o"/> Waiting Payment</span>
+					<i class="fa fa-fw fa-clock-o"/> Uncleared</span>
                               </strong>
 
 			    </td>
