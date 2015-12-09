@@ -30,15 +30,15 @@ $(document).ready(function () {
         rules:{
                 confirm_code:{
                     required: true,
-                    minlength: 9,
-                    maxlength: 9
+                    minlength: 8,
+                    maxlength: 20
                 }
         },
         messages:{
                 confirm_code:{
                     required: "You must enter Transaction Number to proceed",
-                    minlength: "You need to enter at least 9 charaters of you Transaction Number",
-                    maxlength: "You have exceeded maximum of 9 charaters"
+                    minlength: "Minimun of 8 charaters required",
+                    maxlength: "Maximum number of charaters exceeded"
                 }
         }
       });//end of section by optima ICT <info@optima.co.ke>

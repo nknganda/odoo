@@ -181,7 +181,6 @@ class TransactionMobilem(models.Model):
 		# get txn before proceeding
 	        if hasattr(self, tx_find_method_name):
         	    tx = getattr(self, tx_find_method_name)(data)
-               	    #_logger.info('TRABSACTION ITSELF TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTt: %s' % tx)
 		if tx  and tx.partner_id.company_id.mobilem_create_invoice and data.get('return_url') == '/shop/payment/validate':
 		    # payment made from from online shop
                	    _logger.info('{} is making payment from online shop'.format(tx.partner_id.name))
@@ -208,11 +207,9 @@ class TransactionMobilem(models.Model):
 		# if txn has been validated then create invoice from txn and sale order
 		if tx and tx.state == 'done' and tx.sale_order_id.state in ['sale', 'done']:
 			invoice_id = tx.sale_order_id.action_invoice_create(final=True)
-               		#_logger.info('INVOICE ID  EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEe: %s' % invoice_id)
 			#check if invoice was created
 			if invoice_id:
 			    invoice = self.env['account.invoice'].browse(invoice_id)
-               		    #_logger.info('INVOICE itself ***********************************************************88: %s' % invoice)
 			    #confirm that invoice is not already validated by another user or process
 			    if invoice and invoice.state == 'draft':
 				invoice.signal_workflow('invoice_open') #validate invoice
@@ -259,6 +256,5 @@ class TransactionMobilem(models.Model):
                 email_ctx = email_act['context']
                 email_ctx.update(default_email_from = admin_email)
                 invoice.with_context(email_ctx).message_post_with_template(email_ctx.get('default_template_id'))
-               	_logger.info('INVOICE IS BEING SENT VIA MAIL NOW iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii: %s' % email_ctx)
             return True
 
