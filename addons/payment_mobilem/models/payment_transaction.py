@@ -112,7 +112,7 @@ class TransactionMobilem(models.Model):
 	       mobilem_rec = self.env['payment.mobile'].search(
 			[	('code', '=', cust_tx_code ), 
 				('account_id', '=', tx.acquirer_id.mobilem_account_id.id ), 
-				#('processed', '=', False)
+				('processed', '=', False)
 			], 
 				order="timestamp desc", limit=1)
 

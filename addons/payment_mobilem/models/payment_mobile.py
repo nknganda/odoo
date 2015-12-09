@@ -154,15 +154,11 @@ class PaymentMobile(models.Model):
 	   for rec in self:
 	      reg_exp = rec.account_id.regex_id.regex
 	      field_ids = rec.account_id.regex_id.msg_fields
-              #_logger.info("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx field_ids %s", field_ids)
 	      field_ids = re.sub("([^,_a-zA-Z]*)", "", field_ids) #remove anything else except A-Za-z,_
   	      db_fields = re.sub("(^[,_]*|[,_]*$)", "", field_ids).split(",") #remove any _ or , at start or end of string and split the string into a list
-              #_logger.info("JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ db_fields %s", db_fields)
 	      data = re.findall(reg_exp, mes).pop() # data is in tuple
-              #_logger.info("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDddddddd data %s", data)
 	      for field in db_fields:
 		  vals[field] = data[db_fields.index(field)]    
-              #_logger.info("VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV vals %s", vals)
 	      rec.write(vals)
 
 	      #start checking for matching transaction for every message received
