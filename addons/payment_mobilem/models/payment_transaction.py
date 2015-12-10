@@ -254,7 +254,7 @@ class TransactionMobilem(models.Model):
             if email_act and email_act.get('context'):
 		admin_email = self.env.ref('base.user_root').partner_id.email
                 email_ctx = email_act['context']
-                email_ctx.update(default_email_from = admin_email)
+                email_ctx.update(default_email_from = admin_email, signature=True)
                 invoice.with_context(email_ctx).message_post_with_template(email_ctx.get('default_template_id'))
             return True
 

@@ -1,0 +1,589 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+<!--Invoice mail -->
+<record id="account.email_template_edi_invoice" model="mail.template">
+<field name="body_html"><![CDATA[
+<p>
+</p>
+<div style="color:#545454; margin-bottom:0px;">
+<div style="background-color:#545454; padding:10px; border-top-right-radius:5px; border-top-left-radius:5px;">
+	<h1 style="margin-left:0px;
+		margin-right:0px;
+		font-size:2em;
+		margin-bottom:4px;
+		margin-top:0px;
+		color:inherit;
+		line-height:1.1;
+		font-weight:bold;
+		font-family:inherit;" 
+		align="center">
+		<font style="color:#9abe00">${object.company_id.name}</font></h1>
+	<p>
+  		<br>
+	</p>
+	<h3 style="margin-left:0px;margin-right:0px;
+		font-size:1.5em;
+		margin-bottom:4px;
+		margin-top:0px;
+		color:inherit;
+		line-height:1.1;
+		font-weight:bold;
+		font-family:inherit;" 
+		align="center">
+		<font style="color:#ffffff">Your Invoice #${object.number} ${object.state in ('open') and 'has been generated' or 'has been paid'}</font>
+	</h3>
+</div>
+<div style="border-left: 1px solid #eee; border-right: 1px solid #eee; margin-bottom:0px;">
+<div style="padding-top:10px; padding-bottom:5px;">
+	<h4 style="margin-left:0px;
+		margin-right:0px;
+		font-size:inherit;
+		margin-bottom:0px;
+		margin-top:0px;
+		color:#545454;
+		line-height:1.1;
+		font-weight:bold;
+		font-family:inherit;">Dear ${object.partner_id.name},
+	</h4>
+</div>
+<div style="padding:5px;">
+   <p align="justify">
+	This email is to confirm to you that we have received ${object.state in ('open') and 'partial' or 'full'} payment of your recent Order (Ref:${object.origin}). Please find attached, your actual invoice in PDF format.
+   </p>
+   <p align="justify">
+      	Below is the status and summary of your Invoice:
+   </p>
+</div>
+
+
+<div style="background-color:#efe;">
+   <div style="font-size: 1px;line-height: 1px;background-color: #dddee1;">&nbsp;</div>
+     <blockquote style="margin-bottom: 0px;">
+ 	<p>
+	<b>Invoice Number:</b> ${object.number}</p><p>
+	<b>Invoice Date:</b> ${object.date_invoice}</p><p>
+	<b>Total Amount:</b> ${'{:,.2f}'.format(object.amount_total)} ${object.currency_id.symbol}</p><p>
+	<b>Amount Due:</b> ${'{:,.2f}'.format(object.residual)} ${object.currency_id.symbol}</p><p>
+	% if object.origin:
+	<b>Order Ref:</b> ${object.origin}</p><p>
+	%endif
+	<b>Invoice Status:</b> ${object.state in ('open', 'draft') and 'Awaiting Payment' or 'Fully Paid'}
+	</p>
+     </blockquote>
+   <div style="font-size: 1px;line-height: 1px;background-color: #dddee1;">&nbsp;</div>
+</div>
+
+
+<div style="padding:5px;">
+    <p align="justify">
+	${object.state in ('open', 'draft') and 'If you have not fully settled the amount due, please note that you can make payment to us through our online portal at your convenience' or 'We are currently processing your delivery order and our team will get in touch with you soonest'}. Please note that you can also view all your recent invoices and orders you have made through our online shop by visiting our customer portal using the button below
+    </p>
+</div>
+
+
+<div style="margin-bottom: 0px;
+    		    margin-top: 0px;
+		    text-align: center !important;">
+	   <a style="border-radius: 5px;
+		display: inline-block;
+		font-size: 14px;
+		font-weight: 700;
+		line-height: 24px;
+		padding: 13px 35px 12px;
+		text-align: center;
+		text-decoration: none !important;
+		transition: opacity 0.2s ease-in 0s;
+		color: #545454 !important;
+		background-color: #9ABE00;" 
+		href="${signup_url}">Customer Portal
+	   </a>
+</div>
+
+<div>
+    <p align="center" style="font-weight: 700; font-size: 14px; margin-bottom:0px; padding-bottom:15px;">Once again, thank you for choosing ${object.company_id.name}</p>
+
+</div>
+
+</div>
+</div>]]></field>
+</record>
+
+        <!--Default Notification Email template -->
+<record id="portal_sale.email_template_edi_sale" model="mail.template">
+<field name="body_html"><![CDATA[
+<p>
+
+</p>
+<div style="color:#545454; border:1px solid #eee; border-top-right-radius:5px; border-top-left-radius:5px; margin-bottom:0px ">
+<div style="background-color:#efefef; padding:10px;">
+	<h1 style="margin-left:0px;
+		margin-right:0px;
+		font-size:2em;
+		margin-bottom:4px;
+		margin-top:0px;
+		color:inherit;
+		line-height:1.1;
+		font-weight:bold;
+		font-family:inherit;" 
+		align="center">
+		<font style="color:#9abe00">${object.company_id.name}</font></h1>
+	<p>
+  		<br>
+	</p>
+	<h3 style="margin-left:0px;margin-right:0px;
+		font-size:1.5em;
+		margin-bottom:4px;
+		margin-top:0px;
+		color:inherit;
+		line-height:1.1;
+		font-weight:bold;
+		font-family:inherit;" 
+		align="center">
+		<font style="color:#545454">Your ${object.state in ('draft', 'sent') and 'Quotation' or 'Order'} #${object.name} 
+			${object.state in ('draft', 'sent') and 'Has Been Generated' or 'Has Been Confirmed'}</font>
+	</h3>
+</div>
+
+<div style="padding-top:10px; padding-bottom:5px;">
+	<h4 style="margin-left:0px;
+		margin-right:0px;
+		font-size:inherit;
+		margin-bottom:0px;
+		margin-top:0px;
+		color:#545454;
+		line-height:1.1;
+		font-weight:bold;
+		font-family:inherit;">Dear ${object.partner_id.name},
+	</h4>
+</div>
+<div style="padding:5px;">
+   <p align="justify">
+	Thank you for ${object.state in ('draft', 'sent') and 'requesting for our quotation' or 'placing an order with us'}.
+      	This email is to confirm to you that your recent ${object.state in ('draft', 'sent') and 'quote' or 'order'}, which you placed through our online shop, was successful.
+   </p>
+   <p align="justify">
+      	Below is the status and summary of your ${object.state in ('draft', 'sent') and 'quote' or 'order'}:
+   </p>
+</div>
+
+
+<div style="background-color:#efe;">
+   <div style="font-size: 1px;line-height: 1px;background-color: #dddee1;">&nbsp;</div>
+     <blockquote style="margin-bottom: 0px;">
+ 	<p>
+	<b>${object.state in ('draft', 'sent') and 'Quotation' or 'Order'} Number:</b> ${object.name}</p><p>
+	<b>${object.state in ('draft', 'sent') and 'Quotation' or 'Order'} Date:</b> ${format_tz(object.date_order, tz=user.tz, context={'lang':object.partner_id.lang})}</p><p>
+	<b>${object.state in ('draft', 'sent') and 'Quotation' or 'Order'} Total: </b>${'{:,.2f}'.format(object.amount_total)} ${object.pricelist_id.currency_id.name}</p><p>
+	<b>${object.state in ('draft', 'sent') and 'Quotation' or 'Order'} Status:</b> ${object.state in ('sale', 'done') and 'Confirmed' or 'Waiting customer feedback'}
+	</p>
+     </blockquote>
+   <div style="font-size: 1px;line-height: 1px;background-color: #dddee1;">&nbsp;</div>
+</div>
+
+
+<div style="padding:5px;">
+    <p align="justify">
+	Also, please find attached, a copy of the actual ${object.state in ('draft', 'sent') and 'quote' or 'order'} in PDF format.
+	If you have not ${object.state in ('draft', 'sent') and 'confirmed this quote, you can visit our customer portal and do so' or 'paid for this order yet, you can visit our customer portal'} by clicking on the button below and you will be directed to our online customer portal.
+    </p>
+</div>
+
+
+<div style="margin-bottom: 0px;
+    		    margin-top: 0px;
+		    text-align: center;">
+	   <a style="border-radius: 5px;
+		display: inline-block;
+		font-size: 14px;
+		font-weight: 700;
+		line-height: 24px;
+		padding: 13px 35px 12px;
+		text-align: center;
+		text-decoration: none !important;
+		transition: opacity 0.2s ease-in 0s;
+		color: #545454 !important;
+		background-color: #9ABE00;" 
+		href="/quote/${object.id}/${object.access_token}">View ${object.state in ('draft', 'sent') and 'Quotation' or 'Order'} 
+	   </a>
+</div>
+
+<div>
+    <p align="center" style="font-weight: 700; font-size: 14px;">Once again, thank you for choosing ${object.company_id.name}</p>
+
+</div>
+</div>
+
+]]></field>
+</record>
+
+<record id="portal_sale.email_template_edi_invoice" model="mail.template">
+<field name="body_html"><![CDATA[
+<p>
+</p>
+<div style="color:#545454; margin-bottom:0px;">
+<div style="background-color:#545454; padding:10px; border-top-right-radius:5px; border-top-left-radius:5px;">
+	<h1 style="margin-left:0px;
+		margin-right:0px;
+		font-size:2em;
+		margin-bottom:4px;
+		margin-top:0px;
+		color:inherit;
+		line-height:1.1;
+		font-weight:bold;
+		font-family:inherit;" 
+		align="center">
+		<font style="color:#9abe00">${object.company_id.name}</font></h1>
+	<p>
+  		<br>
+	</p>
+	<h3 style="margin-left:0px;margin-right:0px;
+		font-size:1.5em;
+		margin-bottom:4px;
+		margin-top:0px;
+		color:inherit;
+		line-height:1.1;
+		font-weight:bold;
+		font-family:inherit;" 
+		align="center">
+		<font style="color:#ffffff">Your Invoice #${object.number} ${object.state in ('open') and 'has been generated' or 'has been paid'}</font>
+	</h3>
+</div>
+<div style="border-left: 1px solid #eee; border-right: 1px solid #eee; margin-bottom:0px;">
+<div style="padding-top:10px; padding-bottom:5px;">
+	<h4 style="margin-left:0px;
+		margin-right:0px;
+		font-size:inherit;
+		margin-bottom:0px;
+		margin-top:0px;
+		color:#545454;
+		line-height:1.1;
+		font-weight:bold;
+		font-family:inherit;">Dear ${object.partner_id.name},
+	</h4>
+</div>
+<div style="padding:5px;">
+   <p align="justify">
+	This email is to confirm to you that we have received ${object.state in ('open') and 'partial' or 'full'} payment of your recent Order (Ref:${object.origin}). Please find attached, your actual invoice in PDF format.
+   </p>
+   <p align="justify">
+      	Below is the status and summary of your Invoice:
+   </p>
+</div>
+
+
+<div style="background-color:#efe;">
+   <div style="font-size: 1px;line-height: 1px;background-color: #dddee1;">&nbsp;</div>
+     <blockquote style="margin-bottom: 0px;">
+ 	<p>
+	<b>Invoice Number:</b> ${object.number}</p><p>
+	<b>Invoice Date:</b> ${object.date_invoice}</p><p>
+	<b>Total Amount:</b> ${'{:,.2f}'.format(object.amount_total)} ${object.currency_id.symbol}</p><p>
+	<b>Amount Due:</b> ${'{:,.2f}'.format(object.residual)} ${object.currency_id.symbol}</p><p>
+	% if object.origin:
+	<b>Order Ref:</b> ${object.origin}</p><p>
+	%endif
+	<b>Invoice Status:</b> ${object.state in ('open', 'draft') and 'Awaiting Payment' or 'Fully Paid'}
+	</p>
+     </blockquote>
+   <div style="font-size: 1px;line-height: 1px;background-color: #dddee1;">&nbsp;</div>
+</div>
+
+
+<div style="padding:5px;">
+    <p align="justify">
+	${object.state in ('open', 'draft') and 'If you have not fully settled the amount due, please note that you can make payment to us through our online portal at your convenience' or 'We are currently processing your delivery order and our team will get in touch with you soonest'}. Please note that you can also view all your recent invoices and orders you have made through our online shop by visiting our customer portal using the button below
+    </p>
+</div>
+
+
+<div style="margin-bottom: 0px;
+    		    margin-top: 0px;
+		    text-align: center !important;">
+	   <a style="border-radius: 5px;
+		display: inline-block;
+		font-size: 14px;
+		font-weight: 700;
+		line-height: 24px;
+		padding: 13px 35px 12px;
+		text-align: center;
+		text-decoration: none !important;
+		transition: opacity 0.2s ease-in 0s;
+		color: #545454 !important;
+		background-color: #9ABE00;" 
+		href="${signup_url}">Customer Portal
+	   </a>
+</div>
+
+<div>
+    <p align="center" style="font-weight: 700; font-size: 14px; margin-bottom:0px; padding-bottom:15px;">Once again, thank you for choosing ${object.company_id.name}</p>
+
+</div>
+
+</div>
+</div>
+
+]]></field>
+</record>
+        <!--Email template -->
+<record id="sale.email_template_edi_sale" model="mail.template">
+<field name="name">Sales Order - Send by Email</field>
+<field name="body_html"><![CDATA[
+<p>
+
+</p>
+<div style="color:#545454; border:1px solid #eee; border-top-right-radius:5px; border-top-left-radius:5px; margin-bottom:0px ">
+<div style="background-color:#efefef; padding:10px;">
+	<h1 style="margin-left:0px;
+		margin-right:0px;
+		font-size:2em;
+		margin-bottom:4px;
+		margin-top:0px;
+		color:inherit;
+		line-height:1.1;
+		font-weight:bold;
+		font-family:inherit;" 
+		align="center">
+		<font style="color:#9abe00">${object.company_id.name}</font></h1>
+	<p>
+  		<br>
+	</p>
+	<h3 style="margin-left:0px;margin-right:0px;
+		font-size:1.5em;
+		margin-bottom:4px;
+		margin-top:0px;
+		color:inherit;
+		line-height:1.1;
+		font-weight:bold;
+		font-family:inherit;" 
+		align="center">
+		<font style="color:#545454">Your ${object.state in ('draft', 'sent') and 'Quotation' or 'Order'} #${object.name} 
+			${object.state in ('draft', 'sent') and 'Has Been Generated' or 'Has Been Confirmed'}</font>
+	</h3>
+</div>
+
+<div style="padding-top:10px; padding-bottom:5px;">
+	<h4 style="margin-left:0px;
+		margin-right:0px;
+		font-size:inherit;
+		margin-bottom:0px;
+		margin-top:0px;
+		color:#545454;
+		line-height:1.1;
+		font-weight:bold;
+		font-family:inherit;">Dear ${object.partner_id.name},
+	</h4>
+</div>
+<div style="padding:5px;">
+   <p align="justify">
+	Thank you for ${object.state in ('draft', 'sent') and 'requesting for our quotation' or 'placing an order with us'}.
+      	This email is to confirm to you that your recent ${object.state in ('draft', 'sent') and 'quote' or 'order'}, which you placed through our online shop, was successful.
+   </p>
+   <p align="justify">
+      	Below is the status and summary of your ${object.state in ('draft', 'sent') and 'quote' or 'order'}:
+   </p>
+</div>
+
+
+<div style="background-color:#efe;">
+   <div style="font-size: 1px;line-height: 1px;background-color: #dddee1;">&nbsp;</div>
+     <blockquote style="margin-bottom: 0px;">
+ 	<p>
+	<b>${object.state in ('draft', 'sent') and 'Quotation' or 'Order'} Number:</b> ${object.name}</p><p>
+	<b>${object.state in ('draft', 'sent') and 'Quotation' or 'Order'} Date:</b> ${format_tz(object.date_order, tz=user.tz, context={'lang':object.partner_id.lang})}</p><p>
+	<b>${object.state in ('draft', 'sent') and 'Quotation' or 'Order'} Total: </b>${'{:,.2f}'.format(object.amount_total)} ${object.pricelist_id.currency_id.name}</p><p>
+	<b>${object.state in ('draft', 'sent') and 'Quotation' or 'Order'} Status:</b> ${object.state in ('sale', 'done') and 'Confirmed' or 'Waiting customer feedback'}
+	</p>
+     </blockquote>
+   <div style="font-size: 1px;line-height: 1px;background-color: #dddee1;">&nbsp;</div>
+</div>
+
+
+<div style="padding:5px;">
+    <p align="justify">
+	Also, please find attached, a copy of the actual ${object.state in ('draft', 'sent') and 'quote' or 'order'} in PDF format.
+	If you have not ${object.state in ('draft', 'sent') and 'confirmed this quote, you can visit our customer portal and do so' or 'paid for this order yet, you can visit our customer portal'} by clicking on the button below and you will be directed to our online customer portal.
+    </p>
+</div>
+
+
+<div style="margin-bottom: 0px;
+    		    margin-top: 0px;
+		    text-align: center;">
+	   <a style="border-radius: 5px;
+		display: inline-block;
+		font-size: 14px;
+		font-weight: 700;
+		line-height: 24px;
+		padding: 13px 35px 12px;
+		text-align: center;
+		text-decoration: none !important;
+		transition: opacity 0.2s ease-in 0s;
+		color: #545454 !important;
+		background-color: #9ABE00;" 
+		href="/quote/${object.id}/${object.access_token}">View ${object.state in ('draft', 'sent') and 'Quotation' or 'Order'} 
+	   </a>
+</div>
+
+<div>
+    <p align="center" style="font-weight: 700; font-size: 14px;">Once again, thank you for choosing ${object.company_id.name}</p>
+
+</div>
+</div>]]></field>
+
+</record>
+
+<record model="res.users" id="base.user_root">
+<field name="signature"><![CDATA[
+<div style="border-bottom-right-radius:5px; border-bottom-left-radius:5px; color:#545454; background-image: linear-gradient(to bottom, #BF0, #9ABE00); font-size: 12px; margin-top:0px; margin-bottom:0px">
+<div>
+ <blockquote style="margin-top: 0px;">
+    <p style="margin-top: 0px; padding-top: 10px;">
+       	<font style="font-size: 12px;">
+              	Your satisfaction is important to us. If you have any query, suggestion or comment, please call, write or visit us. Our contacts are shown below.
+	</font>
+    </p>
+ </blockquote>
+</div>
+        <h3 style="margin-left:0px;margin-right:0px;font-size:1.17em;margin-bottom:4px;margin-top:0px;color:inherit;line-height:1.1;font-weight:bold;font-famil                 y:inherit;">&nbsp;Optima ICT Services LTD
+        </h3>
+        
+            <div style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; ">
+                &nbsp; 993 Rubia Estate, Langata
+            </div>
+       
+      
+            <div style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; ">
+                &nbsp; P.O Box 873 - 00517
+            </div>
+     
+            <div style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; ">
+                &nbsp; Nairobi
+            </div>
+    
+            <div style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; ">
+                &nbsp; +254 715 956 855 | +254 524 2032
+            </div>
+   
+            <div style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; ">
+                &nbsp; info@optima.co.ke
+            </div>
+    
+            <div style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; ">
+                &nbsp; http://www.optima.co.ke
+            </div>
+  </div>
+
+]]></field>
+</record>
+
+<record id="website_quote.email_template_edi_sale" model="mail.template">
+<field name="name">Sales Order - Send by Email (Online Quote)</field>
+<field name="body_html"><![CDATA[
+<p>
+
+</p>
+<div style="color:#545454; border:1px solid #eee; border-top-right-radius:5px; border-top-left-radius:5px; margin-bottom:0px ">
+<div style="background-color:#efefef; padding:10px;">
+	<h1 style="margin-left:0px;
+		margin-right:0px;
+		font-size:2em;
+		margin-bottom:4px;
+		margin-top:0px;
+		color:inherit;
+		line-height:1.1;
+		font-weight:bold;
+		font-family:inherit;" 
+		align="center">
+		<font style="color:#9abe00">${object.company_id.name}</font></h1>
+	<p>
+  		<br>
+	</p>
+	<h3 style="margin-left:0px;margin-right:0px;
+		font-size:1.5em;
+		margin-bottom:4px;
+		margin-top:0px;
+		color:inherit;
+		line-height:1.1;
+		font-weight:bold;
+		font-family:inherit;" 
+		align="center">
+		<font style="color:#545454">Your ${object.state in ('draft', 'sent') and 'Quotation' or 'Order'} #${object.name} 
+			${object.state in ('draft', 'sent') and 'Has Been Generated' or 'Has Been Confirmed'}</font>
+	</h3>
+</div>
+
+<div style="padding-top:10px; padding-bottom:5px;">
+	<h4 style="margin-left:0px;
+		margin-right:0px;
+		font-size:inherit;
+		margin-bottom:0px;
+		margin-top:0px;
+		color:#545454;
+		line-height:1.1;
+		font-weight:bold;
+		font-family:inherit;">Dear ${object.partner_id.name},
+	</h4>
+</div>
+<div style="padding:5px;">
+   <p align="justify">
+	Thank you for ${object.state in ('draft', 'sent') and 'requesting for our quotation' or 'placing an order with us'}.
+      	This email is to confirm to you that your recent ${object.state in ('draft', 'sent') and 'quote' or 'order'}, which you placed through our online shop, was successful.
+   </p>
+   <p align="justify">
+      	Below is the status and summary of your ${object.state in ('draft', 'sent') and 'quote' or 'order'}:
+   </p>
+</div>
+
+
+<div style="background-color:#efe;">
+   <div style="font-size: 1px;line-height: 1px;background-color: #dddee1;">&nbsp;</div>
+     <blockquote style="margin-bottom: 0px;">
+ 	<p>
+	<b>${object.state in ('draft', 'sent') and 'Quotation' or 'Order'} Number:</b> ${object.name}</p><p>
+	<b>${object.state in ('draft', 'sent') and 'Quotation' or 'Order'} Date:</b> ${format_tz(object.date_order, tz=user.tz, context={'lang':object.partner_id.lang})}</p><p>
+	<b>${object.state in ('draft', 'sent') and 'Quotation' or 'Order'} Total: </b>${'{:,.2f}'.format(object.amount_total)} ${object.pricelist_id.currency_id.name}</p><p>
+	<b>${object.state in ('draft', 'sent') and 'Quotation' or 'Order'} Status:</b> ${object.state in ('sale', 'done') and 'Confirmed' or 'Waiting customer feedback'}
+	</p>
+     </blockquote>
+   <div style="font-size: 1px;line-height: 1px;background-color: #dddee1;">&nbsp;</div>
+</div>
+
+
+<div style="padding:5px;">
+    <p align="justify">
+	Also, please find attached, a copy of the actual ${object.state in ('draft', 'sent') and 'quote' or 'order'} in PDF format.
+	If you have not ${object.state in ('draft', 'sent') and 'confirmed this quote, you can visit our customer portal and do so' or 'paid for this order yet, you can visit our customer portal'} by clicking on the button below and you will be directed to our online customer portal.
+    </p>
+</div>
+
+
+<div style="margin-bottom: 0px;
+    		    margin-top: 0px;
+		    text-align: center;">
+	   <a style="border-radius: 5px;
+		display: inline-block;
+		font-size: 14px;
+		font-weight: 700;
+		line-height: 24px;
+		padding: 13px 35px 12px;
+		text-align: center;
+		text-decoration: none !important;
+		transition: opacity 0.2s ease-in 0s;
+		color: #545454 !important;
+		background-color: #9ABE00;" 
+		href="/quote/${object.id}/${object.access_token}">View ${object.state in ('draft', 'sent') and 'Quotation' or 'Order'} 
+	   </a>
+</div>
+
+<div>
+    <p align="center" style="font-weight: 700; font-size: 14px;">Once again, thank you for choosing ${object.company_id.name}</p>
+
+</div>
+</div>]]></field>
+
+</record>
+
+
+</data>
+</openerp>
