@@ -18,6 +18,7 @@
 	    <group>
              <field name="regex_id"/>
              <field name="provider_id"/>
+             <field name="origin"/>
 	    </group>
 	  </group>
 	 </sheet>

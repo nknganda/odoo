@@ -57,6 +57,7 @@ class MobileAccounts(models.Model):
 	_order = 'name asc'
 	
 	name = fields.Char('Username', required=True, help="This is a UNIQUE username for this mobile payment account. This MUST be exactly the same as the id/username configured in your SMSsync URL in your phone. It is used by the system to identify and authenticate the SMSsync gateway that is sending in the SMS texts.")
+	origin = fields.Char('Authorised Sender', required=True, help="This is the authorised sender/origin of the SMS. Normally mobile payments SMS have a unique origin/sender which is used to verify that the payment message trully originates from the service provider")
 	provider_id = fields.Many2one(related='regex_id.provider_id', string='Service Provider', readonly=True, select=True, help="The Mobile Service Provider e.g safaricom,\
 	 Airtel")
 	regex_id = fields.Many2one('mobile.regex', 'Regula Expression', required=True, select=True, help="This is the Regular Expression that will be used to\
@@ -101,14 +102,16 @@ class MobileAccounts(models.Model):
         	return default_crypt_context
 
 	@api.model
-	def check_credentials(self, secret=None, acc_id=None):
+	def check_credentials(self, secret=None, msg_from=None, acc_id=None):
 	    """ checks username and password and returns True or False and also the mobilem account_id for the SMS"""
-	    valid_pass = False; replacement = None; account_id=None;
+	    authenticated = False; replacement = None; account_id=None; authorized=False;
 	    account = self.env['mobile.accounts'].search([('name', '=', acc_id)], limit=1, order='id desc')
+	    if msg_from and msg_from == account.origin:
+		authorized=True
 	    if account and secret:
-	       valid_pass, replacement = self._crypt_context().verify_and_update(secret, account.secret)
+	       authenticated, replacement = self._crypt_context().verify_and_update(secret, account.secret)
 	       account_id = account.id
-	    return valid_pass, account_id 
+	    return authenticated, authorized, account_id 
 	
 class PaymentMobile(models.Model):
 	_name = 'payment.mobile'
@@ -146,28 +149,35 @@ class PaymentMobile(models.Model):
 	balance = fields.Char('Balance', readonly=True, help="The mobile money account balance  after the transaction.This is in local currency as shown\
 	 in the message")
 
+
+	_sql_constraints = {
+		('unique_messages', 'unique(message_id, account_id)', 'Duplicate message ID found!')
+	}
+
 	@api.multi
 	def mobile_message_process(self):
 	   """ Function to be called by odoo workflow to process mobile SMS messages as soon as they arrive into odoo database """
-	   txn_obj = self.env['payment.transaction']
-	   vals = {}
 	   for rec in self:
 	      reg_exp = rec.account_id.regex_id.regex
-	      field_ids = rec.account_id.regex_id.msg_fields
-	      field_ids = re.sub("([^,_a-zA-Z]*)", "", field_ids) #remove anything else except A-Za-z,_
-  	      db_fields = re.sub("(^[,_]*|[,_]*$)", "", field_ids).split(",") #remove any _ or , at start or end of string and split the string into a list
-	      data = re.findall(reg_exp, mes).pop() # data is in tuple
-	      for field in db_fields:
+	      data = re.findall(reg_exp, rec.message) # for test, substitute rec.message with mes 
+	      if data:
+	   	vals = {}
+		data = data.pop()
+	        field_ids = rec.account_id.regex_id.msg_fields
+	        field_ids = re.sub("([^,_a-zA-Z]*)", "", field_ids) #remove anything else except A-Za-z,_
+  	        db_fields = re.sub("(^[,_]*|[,_]*$)", "", field_ids).split(",") #remove any _ or , at start or end of string and split the string into a list
+	        for field in db_fields:
 		  vals[field] = data[db_fields.index(field)]    
-	      rec.write(vals)
+	        rec.write(vals)
 
 	      #start checking for matching transaction for every message received
-	      if rec.code and rec.amount:
-	         tx = txn_obj.search([('mobilem_cust_code', '=', rec.code), 
+	        if rec.code and rec.amount:
+	   	   txn_obj = self.env['payment.transaction']
+	           tx = txn_obj.search([('mobilem_cust_code', '=', rec.code), 
 					('state', '=', 'pending'), 
 					('acquirer_id.mobilem_account_id', '=', rec.account_id.id)],
 					limit=1)
-		 if tx:
-		    txn_obj.mobilem_message_validate(tx, rec)
+		   if tx:
+		      txn_obj.mobilem_message_validate(tx, rec)
 	   return True
 
