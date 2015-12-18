@@ -445,6 +445,9 @@ var ChatterComposer = ChatComposer.extend({
             is_log: false,
             internal_subtypes: [],
         });
+        if (this.options.is_log) {
+            this.options.send_text = _('Log');
+        }
         this.events = _.extend(this.events, {
             'click .o_composer_button_full_composer': 'on_open_full_composer',
         });
@@ -716,6 +719,7 @@ var Chatter = form_common.AbstractField.extend({
             display_order: ChatThread.ORDER.DESC,
             display_document_link: false,
             display_needactions: false,
+            squash_close_messages: false,
         });
         this.thread.on('load_more_messages', this, this.load_more_messages);
         this.thread.on('toggle_star_status', this, function (message_id) {

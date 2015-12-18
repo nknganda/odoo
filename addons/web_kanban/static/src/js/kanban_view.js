@@ -136,6 +136,12 @@ var KanbanView = View.extend({
         var deferred = this.grouped ? this.load_groups() : this.load_records();
         return deferred.then(function (data) {
             self.data = data;
+            if (self.grouped) {
+                var new_ids = _.union.apply(null, _.map(data.groups, function (group) {
+                    return group.dataset.ids;
+                }));
+                self.dataset.alter_ids(new_ids);
+            }
         });
     },
 
@@ -621,7 +627,7 @@ var KanbanView = View.extend({
                 self.reload_record(record);
                 self.resequence_column(column);
             }
-        });
+        }).fail(this.do_reload);
     },
 
     update_record: function(event) {
