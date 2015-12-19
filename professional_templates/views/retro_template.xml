@@ -15,7 +15,7 @@
 			    <span itemprop="image" t-field="doc.order_logo" t-field-options='{"widget": "image", "style": "max-height:120px; display: inline-block;"}'/>
 			 </div>
 			 <div t-if="not doc.order_logo and company.invoice_logo" style="width:100%; text-align:right;padding-bottom:8px;">
-			    <span itemprop="image" t-field="company.order_logo" t-field-options='{"widget": "image", "style": "max-height:120px; display: inline-block;"}'/>
+			    <span itemprop="image" t-field="company.invoice_logo" t-field-options='{"widget": "image", "style": "max-height:120px; display: inline-block;"}'/>
 			 </div>
 			 <div t-if="not doc.order_logo and not company.invoice_logo and company.logo" style="width:100%; text-align:right;padding-bottom:8px;">
 			    <span itemprop="image" t-field="company.logo" t-field-options='{"widget": "image", "style": "max-height:120px; display: inline-block;"}'/>
