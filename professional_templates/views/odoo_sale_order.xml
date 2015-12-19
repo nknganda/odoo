@@ -1,0 +1,8 @@
+<openerp>
+    <data>
+      <template id="template_1_document" name="Odoo Sale Quote/Order">
+       <t t-call="sale.report_saleorder_document" t-lang="doc.partner_id.lang"/>
+     </template>
+
+    </data>
+</openerp>
