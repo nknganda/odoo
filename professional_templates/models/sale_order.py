@@ -51,7 +51,7 @@ class customized_order(models.Model):
 	
  	order_logo = fields.Binary("Logo", attachment=True,
              help="This field holds the image used as logo for the order, if non is uploaded, the default logo define in the company settings will be used")
-	template_id = fields.Many2one('ir.ui.view', 'Order Template', default=_default_template,required=True, 
+	templ_id = fields.Many2one('ir.ui.view', 'Order Template', default=_default_template,required=True, 
 		domain="[('type', '=', 'qweb'), ('key', 'like', 'professional_templates.template\_%\_document' )]")
 	odd = fields.Char('Odd parity Color', size=7, required=True, default=_default_odd, help="The background color for Odd lines in the order")	
 	even = fields.Char('Even parity Color', size=7, required=True, default=_default_even, help="The background color for Even lines in the order" )	

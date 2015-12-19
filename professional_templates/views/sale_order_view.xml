@@ -7,7 +7,7 @@
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
 		 <xpath expr="//field[@name='validity_date']" position="after">
-			<field name="template_id"/>
+			<field name="templ_id"/>
 		 </xpath>
 		 <xpath expr="//notebook" position="inside">
                          <page string="Order Report Settings">
