@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
   <data>
-    <template id="template_2_document" name="Classic Template">
+    <template id="SO_1_document" name="Modern Template">
  <!-- Multicompany -->
                 <t t-if="doc and 'company_id' in doc">
                     <t t-set="company" t-value="doc.company_id"></t>
@@ -62,85 +62,83 @@
                 </div> <!--end of Header-->
 		<!-- START OF PAGE -->
                <div class="page col-xs-12" t-attf-style="margin-top:0px; padding-top:5px; padding-left:0px; padding-right:0px; color:{{doc.text_color}} !important;">
-                     <div class="col-xs-12" t-attf-style="margin-top:0px;padding-top:0px;padding-left:0px;padding-right:0px;color:{{doc.theme_txt_color}} !important;background-color:{{doc.theme_color}} !important;">
-		       <div class="col-xs-12"> 
-                           <h3>
-        		        <span t-if="doc.state not in ['draft','sent']">Order # </span>
-	                	<span t-if="doc.state in ['draft','sent']">Quotation # </span>
-                		<span t-field="doc.name"/>
-
-                           </h3>
-			</div>
-	                <div t-if="doc.client_order_ref" class="col-xs-3">
-        	           <strong>Your Reference:</strong>
-                	   <p t-field="doc.client_order_ref"/>
-                	</div>
-                	<div t-if="doc.date_order" class="col-xs-3">
-                    		<strong t-if="doc.state not in ['draft','sent']">Date Ordered:</strong>
-                    		<strong t-if="doc.state in ['draft','sent']">Quotation Date:</strong>
-                    		<p t-field="doc.date_order"/>
-                	</div>
-                	<div t-if="doc.user_id.name" class="col-xs-3">
-                    		<strong>Salesperson:</strong>
-                    		<p t-field="doc.user_id"/>
-                	</div>
-                	<div name="payment_term" t-if="doc.payment_term_id" class="col-xs-3">
-                    		<strong>Payment Term:</strong>
-                    		<p t-field="doc.payment_term_id"/>
-                	</div>
-
-	             </div>
-		
-                 <div class="col-xs-12" style="padding-left:0px; padding-right:0px; padding-bottom:15px; padding-top:20px;"><!--start of wrapper -->
-                   <div class="col-xs-6 pull-left" style="font-size:12px !important;">
-                             <div class="pull-left" style="padding-top:5px; padding-bottom:0px; width:100%;">
-                      		<span t-if="doc.partner_shipping_id == doc.partner_invoice_id" style="font-size:18px; font-weight:bold;">
-				Invoicing &amp; Shipping Address:</span>
-                      		<span t-if="doc.partner_shipping_id != doc.partner_invoice_id" style="font-size:18px; font-weight:bold;">
-				Invoicing Address:</span>
-                   	    </div>
-			    <div class="pull-left" style="widht:100%;">
-                                <h4 t-if="doc.partner_id" t-attf-style="color:{{doc.cust_color}}; margin-top:2px; margin-bottom:5px; margin-left:0px;"> 
-			           <span t-if="doc.partner_id.title" t-field="doc.partner_id.title"/> <span t-field="doc.partner_id"/>
-			       </h4>
-                               <div t-if="doc.partner_id.street or doc.partner_id.street2 or doc.partner_id.zip"> 
-			  		<span class="fa fa-map-marker fa-lg"/> &#160;&#160;<span t-field="doc.partner_id.street"/>
-					<span t-if="doc.partner_id.street and doc.partner_id.street2 ">, </span>
-					<span t-field="doc.partner_id.street2"/><span t-if="doc.partner_id.zip and doc.partner_id.street 
-						or doc.partner_id.street2 ">, </span>
-				       <!--<span t-if="doc.partner_id.zip ">zip: </span>-->
-					<span t-field="doc.partner_id.zip"/>
-			       </div>
-                               <div t-if="doc.partner_id.city or doc.partner_id.country_id">
+                 <div class="col-xs-12" style="padding-left:0px; padding-right:0px;"><!--start of wrapper -->
+		      <div class="col-xs-5 pull-left" style="padding-left:0px; padding-right:0px;">
+                           <div  t-attf-style="background-color:{{doc.theme_color}}; width:auto; float:left; padding-top:2px; padding-bottom:2px; 
+			     color:{{doc.theme_txt_color}};">
+                               <span t-if="doc.partner_shipping_id == doc.partner_invoice_id" style="font-size:16px; padding-left:5px; padding-right:5px;">
+				<span class="fa fa-file-text fa-lg"/>
+					&#160;Invoicing &amp;&#160;<span class="fa fa-truck fa-lg"/> Shipping Address</span>
+                               <span t-if="doc.partner_shipping_id != doc.partner_invoice_id" style="font-size:16px; padding-left:5px; padding-right:5px;">
+				<span class="fa fa-file-text fa-lg"/>
+		           		&#160;Invoicing Address</span>
+		           </div>
+                      </div>
+		    <t t-if="doc.partner_shipping_id != doc.partner_invoice_id">
+		      <div class="col-xs-7 pull-right" style="padding-left:0px; padding-right:0px;">
+                           <div  t-attf-style="background-color:{{doc.theme_color}}; width:auto; float:right; padding-top:2px; padding-bottom:2px; 
+					color:{{doc.theme_txt_color}};">
+                               <span style="font-size:16px; padding-left:5px; padding-right:5px;"><span class="fa fa-truck fa-lg"/>&#160;Shipping Address</span>
+                           </div>
+		      </div>
+		    </t>
+                 </div> <!--end of wrapper2-->
+		    <t t-if="doc.partner_shipping_id != doc.partner_invoice_id">
+		      <div class="col-xs-7 pull-right">
+		         <div style="width:100%; text-align:right;" t-field="doc.partner_shipping_id" t-field-options='{"widget": "contact", "fields": ["address", "name", "phone", "				fax"], "no_marker": true, "phone_icons": true}'/>
+		      </div>
+		    </t>
+                   <div class="col-xs-5 pull-left mt8" style="font-size:12px !important;">
+                            <h4 t-if="doc.partner_id" t-attf-style="color:{{doc.cust_color}}; margin-top:5px; margin-bottom:5px; margin-left:0px;"> 
+				<span t-if="doc.partner_id.title" t-field="doc.partner_id.title"/> <span t-field="doc.partner_id"/>
+			    </h4>
+                            <div t-if="doc.partner_id.street or doc.partner_id.street2 or doc.partner_id.zip"> 
+				<span class="fa fa-map-marker fa-lg"/> &#160;&#160;<span t-field="doc.partner_id.street"/>
+				<span t-if="doc.partner_id.street and doc.partner_id.street2 ">, </span>
+				<span t-field="doc.partner_id.street2"/><span t-if="doc.partner_id.zip and doc.partner_id.street or doc.partner_id.street2 ">, </span>
+				<!--<span t-if="doc.partner_id.zip ">zip: </span>-->
+				<span t-field="doc.partner_id.zip"/>
+			    </div>
+                            <div t-if="doc.partner_id.city or doc.partner_id.country_id">
 				<span class="fa fa-map-marker fa-lg"/> &#160;&#160;<span t-field="doc.partner_id.city"/>
 				<span t-if="doc.partner_id.country_id and doc.partner_id.city ">, </span>
 				<span t-field="doc.partner_id.country_id"/>
-			       </div>
-                               <div t-if="doc.partner_id.phone or doc.partner_id.mobile"> 
+			    </div>
+                            <div t-if="doc.partner_id.phone or doc.partner_id.mobile"> 
 				<span class="fa fa-phone-square fa-lg"/> <span t-field="doc.partner_id.phone"/>
 				<span t-if="doc.partner_id.mobile and doc.partner_id.phone ">, </span>
 				<span t-field="doc.partner_id.mobile"/>
-			       </div>
-                               <div t-if="doc.partner_id.email"> <span class="fa fa-envelope-square fa-lg"/> <span t-field="doc.partner_id.email"/></div>
-                               <div t-if="doc.partner_id.website"> <span class="fa fa-globe fa-lg"/> <span t-field="doc.partner_id.website"/></div>
-                               <div t-if="doc.partner_id.vat"><span class="fa fa-calendar fa-lg"/> VAT: <span t-field="doc.partner_id.vat"/></div>
-			     </div>
+			    </div>
+                            <div t-if="doc.partner_id.email"> <span class="fa fa-envelope-square fa-lg"/> <span t-field="doc.partner_id.email"/></div>
+                            <div t-if="doc.partner_id.website"> <span class="fa fa-globe fa-lg"/> <span t-field="doc.partner_id.website"/></div>
+                            <div t-if="doc.partner_id.vat"><span class="fa fa-file-text fa-lg"/> VAT: <span t-field="doc.partner_id.vat"/></div>
                    </div>
-                   <div class="col-xs-6 pull-right" style="font-size:12px !important;">
-			<t t-if="doc.partner_shipping_id != doc.partner_invoice_id">
-			  <div class="pull-right" style="text-align:right; padding-top:5px; padding-bottom:0px; width:100%;">
-			      <span  style="font-size:18px; font-weight:bold;">
-                                Shipping Address:</span>
-			  </div>
-				<div t-field="doc.partner_shipping_id" style="text-align:right; width:100%;" 
-                            t-field-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": true, "phone_icons": true}'/>
-                        <p t-if="doc.partner_id.vat">VAT: <span t-field="doc.partner_id.vat"/></p>
-			</t>
-		   </div>
+                   <div class="col-xs-7 pull-right" t-attf-style="background-color:{{doc.theme_color}}; color:{{doc.theme_txt_color}};">
+                          <h3>
+  		                <span t-if="doc.state not in ['draft','sent']">Order # </span>
+        		        <span t-if="doc.state in ['draft','sent']">Quotation # </span>
+                		<span t-field="doc.name"/>
+                           </h3>
+			   <div t-if="doc.client_order_ref" class="col-xs-6">
+                   		 <strong>Your Reference:</strong>
+                    		<p t-field="doc.client_order_ref"/>
+                	   </div>
+                	   <div t-if="doc.date_order" class="col-xs-6">
+                    		<strong t-if="doc.state not in ['draft','sent']">Date Ordered:</strong>
+                    		<strong t-if="doc.state in ['draft','sent']">Quotation Date:</strong>
+                    		<p t-field="doc.date_order"/>
+                	   </div>
+                		<div t-if="doc.user_id.name" class="col-xs-6">
+                    		<strong>Salesperson:</strong>
+                    		<p t-field="doc.user_id"/>
+                	   </div>
+                	   <div name="payment_term" t-if="doc.payment_term_id" class="col-xs-6">
+                    		<strong>Payment Term:</strong>
+                    		<p t-field="doc.payment_term_id"/>
+                	   </div>
+                   </div>
+		   <div  class="col-xs-12" style="padding:8px;"></div>
 
-                 </div> <!--end of wrapper2-->
-                 <!-- Is there a discount on at least one line? -->
-                 <t t-set="display_discount" t-value="any([l.discount for l in doc.order_line])"/>
                  <div class="col-xs-12 mt8 mb8" t-attf-style="padding-left:0px; padding-right:0px;"> <!--start of DATA-->
                     <table class="table  table-condensed" t-attf-style="color:{{doc.text_color}};" >
                         <thead t-attf-style="background-color:{{doc.theme_color}}; page-break-inside: avoid; color:{{doc.theme_txt_color}};">
@@ -157,8 +155,7 @@
                         </thead>
                         <tbody>
                           <t t-foreach="doc.order_line" t-as="l">
-                             <tr t-if="l.product_uom_qty" t-attf-style="background-color:{{doc.odd if l_parity in 'odd' else doc.even}}; 
-					page-break-inside: avoid !important;">
+                             <tr t-attf-style="background-color:{{doc.odd if l_parity in 'odd' else doc.even}}; page-break-inside: avoid !important;">
                                 <td><span t-esc="l_index + 1"/></td>
                                 <td><span t-field="l.name"/></td>
                                 <td class="text-right">
@@ -188,7 +185,8 @@
                         <tr t-attf-style="border-top: 1px solid {{doc.text_color}};" >
                             <td t-attf-style="border-top: 1px solid {{doc.text_color}} !important;"><strong>Total Without Taxes</strong></td>
                             <td class="text-right" t-attf-style="border-top: 1px solid {{doc.text_color}} !important;">
-                              <span t-field="doc.amount_untaxed" t-field-options='{"widget": "monetary", "display_currency": "doc.pricelist_id.currency_id"}'/>
+                                <span t-field="doc.amount_untaxed" t-field-options='{"widget": "monetary", "display_currency": 
+				"doc.pricelist_id.currency_id"}'/>
                             </td>
                         </tr>
                         <tr>
@@ -198,10 +196,10 @@
                             </td>
                         </tr>
                         <tr t-attf-style="border-bottom: 1px solid {{doc.text_color}};">
-                            <td t-attf-style="border-top: 1px solid {{doc.text_color}} !important;"><strong>Order Total</strong></td>
+                            <td t-attf-style="border-top: 1px solid {{doc.text_color}} !important;"><strong>Total</strong></td>
                             <td class="text-right" t-attf-style="border-top: 1px solid {{doc.text_color}} !important;">
-                                 <strong><span style="font-weight:bold; text-decoration:underline;" t-field="doc.amount_total" 
-				 t-field-options='{"widget": "monetary", "display_currency": "doc.pricelist_id.currency_id"}'/></strong>
+                                 <strong><span  style="font-weight:bold; text-decoration:underline;" t-field="doc.amount_total" t-field-options='{"widget": 
+				 "monetary", "display_currency": "doc.pricelist_id.currency_id"}'/></strong>
                             </td>
                         </tr>
 			</tbody>
@@ -215,14 +213,14 @@
                      <p t-if="doc.payment_term_id.note">
                         <span t-field="doc.payment_term_id.note"/>
                      </p>
-		     <p t-if="not doc.payment_term_id and doc.partner_id.property_payment_term_id">
-                	<span t-field="doc.partner_id.property_payment_term_id.note"/>
+                     <p t-if="not doc.payment_term_id and doc.partner_id.property_payment_term_id">
+         	       <span t-field="doc.partner_id.property_payment_term_id.note"/>
             	     </p>
+
                      <p id="fiscal_position_remark" t-if="doc.fiscal_position_id.note and doc.fiscal_position_id">
                          <strong>Fiscal Position Remark:</strong> <span t-field="doc.fiscal_position_id.note"/>
-		
                      </p>
-		     <div class="oe_structure"/>
+		      <div class="oe_structure"/>
 		</div>
                </div><!--End of PAGE-->
                <div class="footer col-xs-12" t-attf-style="color:{{doc.text_color}} !important; padding-left:0px; padding-right:0px;">

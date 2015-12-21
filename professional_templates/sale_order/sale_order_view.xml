@@ -30,7 +30,7 @@
 	    </field>
 	</record>
 <record id="sale.report_saleorder_document" model="ir.ui.view">
-  <field name="name">Odoo Order/Quotation</field>
+  <field name="name">Odoo Template</field>
 </record>
     </data>
 </openerp>
