@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
   <data>
-    <template id="RFQ_2_document" name="Classic Template">
+    <template id="RFQ_1_document" name="Modern Template">
  <!-- Multicompany -->
                 <t t-if="o and 'company_id' in o">
                     <t t-set="company" t-value="o.company_id"></t>
@@ -11,16 +11,16 @@
                 </t>
                 <div t-attf-style="padding-bottom:0px; padding-left:0px; padding-right:0px; color:{{o.text_color}} !important;" class="header col-xs-12">
                        <div class="col-xs-8" style="padding-bottom:10px;">
-                         <span t-if="o.po_logo">
-			    <span itemprop="image" t-field="o.po_logo" t-field-options='{"widget": "image", "style": "max-height:100px"}'/>
+                         <span t-if="o.rfq_logo">
+			    <span itemprop="image" t-field="o.rfq_logo" t-field-options='{"widget": "image", "style": "max-height:100px"}'/>
 			 </span>
-			 <span t-if="not o.po_logo and company.invoice_logo">
+			 <span t-if="not o.rfq_logo and company.invoice_logo">
 			    <span itemprop="image" t-field="company.invoice_logo" t-field-options='{"widget": "image", "style": "max-height:100px"}'/>
 			</span>
-			 <span t-if="not o.po_logo and not company.invoice_logo and company.logo">
+			 <span t-if="not o.rfq_logo and not company.invoice_logo and company.logo">
 			    <span itemprop="image" t-field="company.logo" t-field-options='{"widget": "image", "style": "max-height:100px"}'/>
 			</span>
-			 <span t-if="not o.po_logo and not company.logo and not company.invoice_logo">
+			 <span t-if="not o.rfq_logo and not company.logo and not company.invoice_logo">
 			    <span itemprop="image" t-field="company.logo" t-field-options='{"widget": "image", "style": "max-height:100px"}'/>
 			</span>
                        </div>
@@ -29,6 +29,7 @@
                             <div t-if="company.street or company.street2 or company.zip"><span class="fa fa-map-marker fa-lg"/>&#160;&#160;
                                         <span t-field="company.street"/> <span t-if="company.street and company.street2">, </span>
 					<span t-field="company.street2"/><span t-if="company.zip and (company.street or company.street2)">, </span> 
+					<!--<span t-if="company.zip">zip: </span>-->
 					<span t-field="company.zip"/>
                             </div>
                             <div t-if="company.city or company.country_id"><span class="fa fa-map-marker fa-lg"/> &#160;&#160;
@@ -61,67 +62,66 @@
                 </div> <!--end of Header-->
 		<!-- START OF PAGE -->
                <div class="page col-xs-12" t-attf-style="margin-top:0px; padding-top:5px; padding-left:0px; padding-right:0px; color:{{o.text_color}} !important;">
-                     <div class="col-xs-12" t-attf-style="margin-top:0px;padding-top:0px;padding-left:0px;padding-right:0px;color:{{o.theme_txt_color}} 
-			!important;background-color:{{o.theme_color}} !important;">
-		       <div class="col-xs-12"> 
-                           <h3>
-	                	<span>Request for Quotation # </span>
-                		<span t-field="o.name"/>
-                           </h3>
-			</div>
-	             </div>
-		
-                 <div class="col-xs-12" style="padding-left:0px; padding-right:0px; padding-bottom:15px; padding-top:20px;"><!--start of wrapper -->
-                   <div class="col-xs-6 pull-left" style="font-size:12px !important;">
-                             <div class="pull-left" style="padding-top:5px; padding-bottom:0px; width:100%;">
-                      		<span style="font-size:18px; font-weight:bold;">
-				Vendor Address:</span>
-                   	    </div>
-			    <div class="pull-left" style="widht:100%;">
-                                <h4 t-if="o.partner_id" t-attf-style="color:{{o.cust_color}}; margin-top:2px; margin-bottom:5px; margin-left:0px;"> 
-			           <span t-if="o.partner_id.title" t-field="o.partner_id.title"/> <span t-field="o.partner_id"/>
-			       </h4>
-                               <div t-if="o.partner_id.street or o.partner_id.street2 or o.partner_id.zip"> 
-			  		<span class="fa fa-map-marker fa-lg"/> &#160;&#160;<span t-field="o.partner_id.street"/>
-					<span t-if="o.partner_id.street and o.partner_id.street2 ">, </span>
-					<span t-field="o.partner_id.street2"/><span t-if="o.partner_id.zip and o.partner_id.street 
-						or o.partner_id.street2 ">, </span>
-					<span t-field="o.partner_id.zip"/>
-			       </div>
-                               <div t-if="o.partner_id.city or o.partner_id.country_id">
+                 <div class="col-xs-12" style="padding-left:0px; padding-right:0px;"><!--start of wrapper -->
+		      <div class="col-xs-6 pull-left" style="padding-left:0px; padding-right:0px;">
+                           <div  t-attf-style="background-color:{{o.theme_color}}; width:auto; float:left; padding-top:2px; padding-bottom:2px; 
+					color:{{o.theme_txt_color}};">
+                               <span style="font-size:16px; padding-left:5px; padding-right:5px;"><span class="fa fa-building fa-lg"/>&#160;Vendor Address</span>
+                           </div>
+		      </div>
+		      <div class="col-xs-6 pull-right" style="padding-left:0px; padding-right:0px;">
+                           <div  t-attf-style="background-color:{{o.theme_color}}; width:auto; float:right; padding-top:2px; padding-bottom:2px; 
+			     color:{{o.theme_txt_color}};">
+					<span style="font-size:16px; padding-left:5px; padding-right:5px;"><span class="fa fa-truck fa-lg"/> 
+					<span>Shipping Address</span></span>
+  		           </div>
+                      </div>
+                 </div> <!--end of wrapper-->
+                 <div class="col-xs-12" style="padding-left:0px; padding-right:0px;"><!--start of wrapper -->
+                   <div class="col-xs-6 pull-left mt8" style="font-size:12px !important; padding-left:8px; padding-right:0px;">
+                            <h4 t-if="o.partner_id" t-attf-style="color:{{o.cust_color}}; margin-top:5px; margin-bottom:5px; margin-left:0px;"> 
+				<span t-if="o.partner_id.title" t-field="o.partner_id.title"/> <span t-field="o.partner_id"/>
+			    </h4>
+                            <div t-if="o.partner_id.street or o.partner_id.street2 or o.partner_id.zip"> 
+				<span class="fa fa-map-marker fa-lg"/> &#160;&#160;<span t-field="o.partner_id.street"/>
+				<span t-if="o.partner_id.street and o.partner_id.street2 ">, </span>
+				<span t-field="o.partner_id.street2"/><span t-if="o.partner_id.zip and o.partner_id.street or o.partner_id.street2 ">, </span>
+				<span t-field="o.partner_id.zip"/>
+			    </div>
+                            <div t-if="o.partner_id.city or o.partner_id.country_id">
 				<span class="fa fa-map-marker fa-lg"/> &#160;&#160;<span t-field="o.partner_id.city"/>
 				<span t-if="o.partner_id.country_id and o.partner_id.city ">, </span>
 				<span t-field="o.partner_id.country_id"/>
-			       </div>
-                               <div t-if="o.partner_id.phone or o.partner_id.mobile"> 
+			    </div>
+                            <div t-if="o.partner_id.phone or o.partner_id.mobile"> 
 				<span class="fa fa-phone-square fa-lg"/> <span t-field="o.partner_id.phone"/>
 				<span t-if="o.partner_id.mobile and o.partner_id.phone ">, </span>
 				<span t-field="o.partner_id.mobile"/>
-			       </div>
-                               <div t-if="o.partner_id.email"> <span class="fa fa-envelope-square fa-lg"/> <span t-field="o.partner_id.email"/></div>
-                               <div t-if="o.partner_id.website"> <span class="fa fa-globe fa-lg"/> <span t-field="o.partner_id.website"/></div>
-                               <div t-if="o.partner_id.vat"><span class="fa fa-calendar fa-lg"/> VAT: <span t-field="o.partner_id.vat"/></div>
-			     </div>
+			    </div>
+                            <div t-if="o.partner_id.email"> <span class="fa fa-envelope-square fa-lg"/> <span t-field="o.partner_id.email"/></div>
+                            <div t-if="o.partner_id.website"> <span class="fa fa-globe fa-lg"/> <span t-field="o.partner_id.website"/></div>
+                            <div t-if="o.partner_id.vat"><span class="fa fa-file-text fa-lg"/> VAT: <span t-field="o.partner_id.vat"/></div>
                    </div>
-                   <div class="col-xs-6 pull-right" style="font-size:12px !important;">
-                       <div class="pull-right" style="text-align:right; padding-top:5px; padding-bottom:0px; width:100%;">
-			      <span  style="font-size:18px; font-weight:bold;">
-                                Shipping Address:</span>
-		       </div>
-                       <div t-if="o.dest_address_id" class="text-right">
+		   <div class="col-xs-6 pull-right text-right" style="padding-left:0px; padding-right:8px;">
+                   	<div t-if="o.dest_address_id">
                           <div t-field="o.dest_address_id"
-                            t-field-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": true, "phone_icons": true}'/>
-                       </div>
+                               t-field-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": true, "phone_icons": true}'/>
+                        </div>
+                        <div t-if="not o.dest_address_id and o.picking_type_id and o.picking_type_id.warehouse_id">
+                           <span t-field="o.picking_type_id.warehouse_id.name"/>
+                           <div t-field="o.picking_type_id.warehouse_id.partner_id"
+                               t-field-options='{"widget": "contact", "fields": ["address", "phone", "fax"], "no_marker": true, "phone_icons": true}'/>
+                        </div>
+                   </div>
+                 </div> <!--end of wrapper-->
+                   <div class="col-xs-8 pull-right" t-attf-style="background-color:{{o.theme_color}}; color:{{o.theme_txt_color}}; padding-bottom:10px;">
+                          <h3>
+        		        <span t-if="o.state == 'draft'">Request for Quotation #</span>
+                		<span t-field="o.name"/>
+                           </h3>
+                   </div>
+		   <div  class="col-xs-12" style="padding:8px;"></div>
 
-                       <div t-if="not o.dest_address_id and o.picking_type_id and o.picking_type_id.warehouse_id" class="text-right">
-                         <span t-field="o.picking_type_id.warehouse_id.name"/>
-                         <div t-field="o.picking_type_id.warehouse_id.partner_id"
-                            t-field-options='{"widget": "contact", "fields": ["address", "phone", "fax"], "no_marker": true, "phone_icons": true}'/>
-                       </div>
-
-		   </div>
-
-                 </div> <!--end of wrapper2-->
                  <div class="col-xs-12 mt8 mb8" t-attf-style="padding-left:0px; padding-right:0px;"> <!--start of DATA-->
                     <table class="table  table-condensed" t-attf-style="color:{{o.text_color}};" >
                         <thead t-attf-style="background-color:{{o.theme_color}}; page-break-inside: avoid; color:{{o.theme_txt_color}};">
@@ -153,10 +153,10 @@
 
                  </div><!--End of DATA-->
 		<div class="col-xs-12 pull-left" style="padding-left:0px; padding-right:0px; page-break-inside: avoid ! important;">
-                     <p t-if="o.notes">
+                     <p>
                         <span t-field="o.notes"/>
                      </p>
-		     <div class="oe_structure"/>
+		      <div class="oe_structure"/>
 		</div>
                </div><!--End of PAGE-->
                <div class="footer col-xs-12" t-attf-style="color:{{o.text_color}} !important; padding-left:0px; padding-right:0px;">
