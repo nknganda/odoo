@@ -28,6 +28,8 @@
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
+        'views/invoice_footer.xml',
+        'views/invoice_data.xml',
         'views/account_invoice.xml',
         'views/modern_template.xml',
         'views/classic_template.xml',
