@@ -4,7 +4,8 @@
 <template id="my_invoice">
     <t t-call="report.html_container">
         <t t-foreach="docs" t-as="o">
-	<t t-call="{{o.template_id.xml_id}}" t-lang="o.partner_id.lang"/>
+	<!--<t t-call="{{o.template_id.xml_id}}" t-lang="o.partner_id.lang"/>-->
+	<t t-raw="translate_doc(o.id, doc_model, 'partner_id.lang', o.template_id.xml_id)"/>
      </t>
     </t>
 </template>
