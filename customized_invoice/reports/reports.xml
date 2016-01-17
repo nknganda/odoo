@@ -6,10 +6,10 @@
             model="account.invoice"
             string="Invoices"
             report_type="qweb-pdf"
-            name="customized_invoice.my_invoice"
-            file="customized_invoice.my_invoice"
+            name="customized_invoice.report_invoice"
+            file="customized_invoice.report_invoice"
             attachment_use="True"
-            attachment="(object.state in ('open','paid')) and ((object.number or '').replace('/','-')+('-paid' if object.state in ('paid') else '-unpaid')+'.pdf')"
+            attachment="(object.state in ('open','paid')) and ((object.number or '').replace('/','_')+'.pdf')"
       />
 
         <report 
@@ -17,8 +17,8 @@
             model="account.invoice"
             string="Duplicates"
             report_type="qweb-pdf"
-            name="customized_invoice.my_duplicate"
-            file="customized_invoice.my_duplicate"
+            name="customized_invoice.report_duplicate"
+            file="customized_invoice.report_duplicate"
             attachment_use="False"
         />
 

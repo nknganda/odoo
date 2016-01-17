@@ -75,5 +75,5 @@ class customized_invoice(models.Model):
             """
             self.ensure_one()
             self.sent = True
-            return self.env['report'].get_action(self, 'customized_invoice.my_invoice')
+            return self.env['report'].get_action(self, 'customized_invoice.report_invoice')
 

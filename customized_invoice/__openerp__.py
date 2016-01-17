@@ -42,6 +42,6 @@
     ],
     # only loaded in demonstration mode
     'demo': [
-        'demo.xml',
+        #'views/demo.xml',
     ],
 }
